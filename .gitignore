@@ -3,6 +3,7 @@
 
 # ignore ide fies
 /.idea/
+__pycache__
 
 # ignore mac files
 .DS_Store
@@ -10,3 +11,4 @@
 # ignore file extentions
 *.db
 *.zip
+

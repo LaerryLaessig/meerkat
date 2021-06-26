@@ -1,12 +1,14 @@
-from flask import render_template, request, jsonify, session
+from flask import render_template, request, jsonify, session, url_for
+from werkzeug.exceptions import abort
+from werkzeug.utils import redirect
 
 from flask_meerkat import app, bcrypt
-from flask_meerkat.database import insert_user, find_user_by_mail
+from flask_meerkat.database import find_user_by_mail, insert_user
 
 
 @app.route('/', methods=['GET'])
 def first_page():
-    return render_template('login.html')
+    return render_template('signin.html')
 
 
 @app.route('/health')
@@ -14,35 +16,32 @@ def health_check():
     return {"status": "ok"}
 
 
-@app.route('/user', methods=['POST', 'PUT'])
-def add_user():
-    json_data= request.json
-    print(json_data)
-    if find_user_by_mail(json_data['email']) is None:
-        insert_user(json_data)
-        status = 'success'
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+    if request.method == 'GET':
+        return render_template('signin.html')
     else:
-        status = 'this email is already registered'
-    return jsonify({'result': status})
+        user = find_user_by_mail(request.form.get('email'))
+        if user and bcrypt.check_password_hash(
+                user.password, request.form.get('password')):
+            session['logged_in'] = True
+            status = True
+        else:
+            status = False
+        return jsonify({'result': status})
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    json_data = request.json
-    user = find_user_by_mail(json_data['email'])
-    if user and bcrypt.check_password_hash(
-            user.password, json_data['password']):
-        session['logged_in'] = True
-        status = True
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        return render_template('signup.html')
     else:
-        status = False
-    return jsonify({'result': status})
-
-
-@app.route('/api/logout')
-def logout():
-    session.pop('logged_in', None)
-    return jsonify({'result': 'success'})
+        if find_user_by_mail(request.form.get('email')) is None and \
+                request.form.get('password') == request.form.get('confirm_password'):
+            insert_user(request.form)
+            return redirect(url_for('signin'))
+        else:
+            abort(401)
 
 
 @app.route('/health', methods=['GET'])

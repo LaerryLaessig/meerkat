@@ -8,11 +8,13 @@
 {% block title %}Meerkat{% endblock %}
 {% block content %}
 <div>
-    <form>
-        <input type="email">
-        <input type="password">
+    <form method="POST" action="signin">
+        <label for="email">e-mail</label>
+        <input id="email" type="email">
+        <label for="password">password</label>
+        <input id="password" type="password">
         <button>sign in</button>
     </form>
 </div>
-<div>sign up <a href="#">here</a>!</div>
+<div>sign up <a href="signup">here</a>!</div>
 {% endblock %}

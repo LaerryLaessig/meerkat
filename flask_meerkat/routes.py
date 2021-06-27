@@ -25,10 +25,9 @@ def signin():
         if user and bcrypt.check_password_hash(
                 user.password, request.form.get('password')):
             session['logged_in'] = True
-            status = True
+            return render_template('userpage.html')
         else:
-            status = False
-        return jsonify({'result': status})
+            return render_template('fail.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])

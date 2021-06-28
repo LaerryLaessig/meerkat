@@ -1,10 +1,11 @@
 from flask_meerkat.database import db
+from flask_login import UserMixin
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column('id', db.Integer, primary_key=True)
-    email = db.Column('email', db.String)
-    name = db.Column('name', db.String)
+    email = db.Column('email', db.String, unique=True)
+    name = db.Column('name', db.String, unique=True)
     password = db.Column('password', db.String)
 
     def __init__(self, email, name, password):
@@ -47,5 +48,3 @@ class Item(db.Model):
 
     def __init__(self, name):
         self.name = name
-
-

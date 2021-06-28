@@ -1,46 +1,61 @@
-from flask import render_template, request, jsonify, session, url_for
-from werkzeug.exceptions import abort
+from flask import render_template, request, url_for, flash
 from werkzeug.utils import redirect
-
-from flask_meerkat import app, bcrypt
-from flask_meerkat.database import find_user_by_mail, insert_user
+from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm
+from flask_meerkat import app
+from flask_login import login_user, current_user, logout_user, login_required
+from flask_meerkat.database import insert_user, find_user_by_mail, update_user
 
 
 @app.route('/', methods=['GET'])
-def first_page():
-    return render_template('signin.html')
-
-
-@app.route('/health')
-def health_check():
-    return {"status": "ok"}
+def home():
+    return render_template('home.html')
 
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
-    if request.method == 'GET':
-        return render_template('signin.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = SignInForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        login_user(find_user_by_mail(form.email.data), remember=form.remember.data)
+        flash(message='Successful logged in!', category='success')
+        return redirect(url_for('home'))
+    return render_template('signin.html', form=form)
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    form = AccountForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        flash(message='Update data!', category='success')
+        update_user(current_user.id, username=form.username.data, email=form.email.data)
     else:
-        user = find_user_by_mail(request.form.get('email'))
-        if user and bcrypt.check_password_hash(
-                user.password, request.form.get('password')):
-            session['logged_in'] = True
-            return render_template('userpage.html')
-        else:
-            return render_template('fail.html')
+        form.username.data = current_user.name
+        form.email.data = current_user.email
+    return render_template('account.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash(message='Successful logged out!', category='success')
+    return redirect(url_for('signin'))
+
+
+@app.route('/password_reset')
+def password_reset():
+    return redirect(url_for('signin'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if request.method == 'GET':
-        return render_template('signup.html')
-    else:
-        if find_user_by_mail(request.form.get('email')) is None and \
-                request.form.get('password') == request.form.get('confirm_password'):
-            insert_user(request.form)
-            return redirect(url_for('signin'))
-        else:
-            abort(401)
+    form = SignUpForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        insert_user(request.form)
+        flash(message='account created for {username}!'.format(username=form.username.data), category='success')
+        return redirect(url_for('signin'))
+    return render_template('signup.html', form=form)
 
 
 @app.route('/health', methods=['GET'])

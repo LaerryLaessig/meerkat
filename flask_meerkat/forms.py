@@ -55,3 +55,12 @@ class AccountForm(FlaskForm):
     def validate_username(self, username):
         if find_user_by_username(username.data) is not None and current_user.name != username.data:
             raise ValidationError('Username already exists')
+
+
+class PasswordResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Send')
+
+    def validate_email(self, email):
+        if find_user_by_mail(email.data) is None:
+            raise ValidationError('Unknown email adress')

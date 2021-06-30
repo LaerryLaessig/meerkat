@@ -1,9 +1,10 @@
 from flask import render_template, request, url_for, flash
 from werkzeug.utils import redirect
-from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm
+from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm, PasswordResetForm
 from flask_meerkat import app
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_meerkat.database import insert_user, find_user_by_mail, update_user
+from flask_meerkat.mail_client import send_password_reset_mail
 
 
 @app.route('/', methods=['GET'])
@@ -43,17 +44,22 @@ def logout():
     return redirect(url_for('signin'))
 
 
-@app.route('/password_reset')
+@app.route('/password_reset', methods=['GET', 'POST'])
 def password_reset():
-    return redirect(url_for('signin'))
+    form = PasswordResetForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        send_password_reset_mail(form.email.data)
+        flash(message='Send reset email to {email}!'.format(email=form.email.data), category='success')
+        return redirect(url_for('signin'))
+    return render_template('password_reset.html', form=form)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
     if request.method == 'POST' and form.validate_on_submit():
-        insert_user(request.form)
-        flash(message='account created for {username}!'.format(username=form.username.data), category='success')
+        insert_user(form.data)
+        flash(message='Account created for {username}!'.format(username=form.username.data), category='success')
         return redirect(url_for('signin'))
     return render_template('signup.html', form=form)
 

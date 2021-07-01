@@ -1,15 +1,25 @@
 from flask import render_template, request, url_for, flash
 from werkzeug.utils import redirect
-from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm, PasswordResetForm
+from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm, PasswordResetForm, PostForm
 from flask_meerkat import app
 from flask_login import login_user, current_user, logout_user, login_required
-from flask_meerkat.database import insert_user, find_user_by_mail, update_user
+from flask_meerkat.database import insert_user, find_user_by_mail, update_user, get_all_posts, insert_post
 from flask_meerkat.mail_client import send_password_reset_mail
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    posts = get_all_posts()
+    return render_template('home.html', posts=posts)
+
+
+@app.route('/post', methods=['GET', 'POST'])
+def post():
+    form = PostForm()
+    if request.method == 'POST':
+        insert_post(form.data)
+        return redirect(url_for('home'))
+    return render_template('post.html', form=form)
 
 
 @app.route('/signin', methods=['GET', 'POST'])

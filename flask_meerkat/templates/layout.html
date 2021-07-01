@@ -9,8 +9,9 @@
 {% block navbar %}
             <ul class="nav nav-tabs justify-content-end">
                 {% if current_user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('account') }}">Account</a> </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Log out</a> </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('account') }}">Account</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Log out</a></li>
                 {% else %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('signup') }}">Register</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('signin') }}">Log in</a></li>

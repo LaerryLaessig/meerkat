@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_meerkat import bcrypt
 from flask_login import current_user
@@ -64,3 +64,9 @@ class PasswordResetForm(FlaskForm):
     def validate_email(self, email):
         if find_user_by_mail(email.data) is None:
             raise ValidationError('Unknown email adress')
+
+
+class PostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    text = TextAreaField('Text', validators=[DataRequired()])
+    submit = SubmitField('Post')

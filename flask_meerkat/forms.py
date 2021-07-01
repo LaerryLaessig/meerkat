@@ -57,13 +57,22 @@ class AccountForm(FlaskForm):
             raise ValidationError('Username already exists')
 
 
-class PasswordResetForm(FlaskForm):
+class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Send')
 
     def validate_email(self, email):
         if find_user_by_mail(email.data) is None:
             raise ValidationError('Unknown email adress')
+
+
+class PasswordResetForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm password', validators=[DataRequired(),
+                                                                     EqualTo('password',
+                                                                             message='Field password and field confirm \
+                                                                                password must match')])
+    submit = SubmitField('Change')
 
 
 class PostForm(FlaskForm):

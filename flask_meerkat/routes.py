@@ -1,9 +1,10 @@
 from flask import render_template, request, url_for, flash
 from werkzeug.utils import redirect
-from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm, PasswordResetForm, PostForm
+from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm, RequestResetForm, PostForm, PasswordResetForm
 from flask_meerkat import app
 from flask_login import login_user, current_user, logout_user, login_required
-from flask_meerkat.database import insert_user, find_user_by_mail, update_user, get_all_posts, insert_post
+from flask_meerkat.database import insert_user, find_user_by_mail, update_user, get_all_posts, insert_post, \
+     update_user_password_by_token
 from flask_meerkat.mail_client import send_password_reset_mail
 
 
@@ -54,14 +55,31 @@ def logout():
     return redirect(url_for('signin'))
 
 
-@app.route('/password_reset', methods=['GET', 'POST'])
-def password_reset():
-    form = PasswordResetForm()
+@app.route('/reset_password', methods=['GET', 'POST'])
+def request_reset_password():
+    form = RequestResetForm()
     if request.method == 'POST' and form.validate_on_submit():
-        send_password_reset_mail(form.email.data)
+        token = find_user_by_mail(form.email.data).get_reset_token()
+        send_password_reset_mail(form.email.data, url_for('reset_password', token=token, _external=True))
         flash(message='Send reset email to {email}!'.format(email=form.email.data), category='success')
         return redirect(url_for('signin'))
-    return render_template('password_reset.html', form=form)
+    return render_template('request_password_reset.html', form=form)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = PasswordResetForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        try:
+            update_user_password_by_token(token, form.password.data)
+            flash(message='Password changed', category='success')
+            return redirect(url_for('signin'))
+        except ValueError:
+            flash(message='Invalid token', category='danger')
+            return redirect(url_for('request_reset_password'))
+    return render_template('reset_password.html', token=token, form=form)
 
 
 @app.route('/signup', methods=['GET', 'POST'])

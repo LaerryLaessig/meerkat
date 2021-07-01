@@ -1,7 +1,9 @@
+from itsdangerous import Serializer, TimedSerializer
 from sqlalchemy import desc
-
-from flask_meerkat import db, login_manager, bcrypt
+from flask_meerkat import db, login_manager, bcrypt, app
 from flask_meerkat.models import User, Post
+
+UTF_8 = 'utf-8'
 
 
 def create_database():
@@ -11,7 +13,7 @@ def create_database():
 def insert_user(user):
     db.session.add(User(email=user['email'],
                         name=user['username'],
-                        password=bcrypt.generate_password_hash(user['password']).decode('utf-8')))
+                        password=bcrypt.generate_password_hash(user['password']).decode(UTF_8)))
     db.session.commit()
     db.session.close()
 
@@ -21,6 +23,23 @@ def update_user(user_id, username, email):
     user.name = username
     user.email = email
     db.session.commit()
+    db.session.close()
+
+
+def update_user_password_by_token(token, password):
+    user = get_user_by_token(token)
+    user.password = bcrypt.generate_password_hash(password).decode(UTF_8)
+    db.session.commit()
+    db.session.close()
+
+
+def get_user_by_token(token):
+    s = TimedSerializer(app.secret_key)
+    try:
+        return User.query.get(s.loads(token))
+    except Exception as e:
+        print(e)
+        raise ValueError
 
 
 def find_user_by_mail(email):
@@ -36,7 +55,6 @@ def get_all_posts():
 
 
 def insert_post(post):
-    db.session.expunge_all()
     db.session.add(Post(title=post['title'],
                         text=post['text']))
     db.session.commit()

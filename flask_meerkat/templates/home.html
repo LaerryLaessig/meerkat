@@ -4,10 +4,13 @@
   <div class="col-md">
     {% for post in posts %}
       <div class="card" style="width: 54rem;">
-        <div class="card-body">
-          <h5 class="card-title">{{ post.title }}</h5>
-          <p class="card-text">{{ post.text}}</p>
-        </div>
+        <form method="POST">
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.text}}</p>
+            <button class="btn btn-outline-danger" formaction="{{ url_for('post_delete', post_id=post.id)}}">Delete</button>
+          </div>
+        </form>
       </div>
     {% endfor %}
   </div>

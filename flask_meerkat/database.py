@@ -1,3 +1,5 @@
+import datetime
+
 from itsdangerous import Serializer, TimedSerializer
 from sqlalchemy import desc
 from flask_meerkat import db, login_manager, bcrypt, app
@@ -54,9 +56,17 @@ def get_all_posts():
     return Post.query.order_by(desc(Post.id)).all()
 
 
-def insert_post(post):
+def insert_post(post, user_id):
     db.session.add(Post(title=post['title'],
-                        text=post['text']))
+                        text=post['text'],
+                        user_id=user_id))
+    db.session.commit()
+    db.session.close()
+
+
+def delete_post(post_id):
+    post = Post.query.get(int(post_id))
+    db.session.delete(post)
     db.session.commit()
     db.session.close()
 

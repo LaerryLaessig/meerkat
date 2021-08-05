@@ -30,3 +30,9 @@ class Post(db.Model):
     text = db.Column('text', db.String)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __init__(self, title, text,user_id):
+        self.title = title
+        self.text = text
+        self.user_id = user_id
+

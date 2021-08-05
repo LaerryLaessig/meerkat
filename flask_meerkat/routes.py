@@ -4,7 +4,7 @@ from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm, RequestRese
 from flask_meerkat import app
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_meerkat.database import insert_user, find_user_by_mail, update_user, get_all_posts, insert_post, \
-    update_user_password_by_token, delete_post
+    update_user_password_by_token, delete_post, find_post_by_id, update_post
 from flask_meerkat.mail_client import send_password_reset_mail
 
 
@@ -23,8 +23,23 @@ def post():
     return render_template('post.html', form=form)
 
 
+@app.route('/post/<post_id>/edit', methods=['GET', 'POST'])
+def edit_post(post_id):
+    form = PostForm()
+    post = find_post_by_id(post_id)
+    if request.method == 'GET':
+        form.title.data = post.title
+        form.text.data = post.text
+        return render_template('post.html', form=form, post=post)
+    elif request.method == 'POST':
+        update_post(actual_post=post,
+                    new_post=form.data,
+                    user_id=current_user.id)
+        return redirect(url_for('home'))
+
+
 @app.route('/post/<post_id>/delete', methods=['POST'])
-def post_delete(post_id):
+def remove_post(post_id):
     delete_post(post_id)
     return redirect(url_for('home'))
 

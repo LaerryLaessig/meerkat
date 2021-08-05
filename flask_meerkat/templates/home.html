@@ -1,23 +1,38 @@
 {% extends "layout.html" %}
 {% block app_content %}
+{% if current_user.is_authenticated %}
 <div class="row">
-  <div class="col-md">
-    {% for post in posts %}
-      <div class="card" style="width: 54rem;">
-        <form method="POST">
-          <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{ post.text}}</p>
-            <button class="btn btn-outline-danger" formaction="{{ url_for('post_delete', post_id=post.id)}}">Delete</button>
-          </div>
-        </form>
-      </div>
-    {% endfor %}
-  </div>
-  <div class="col-sm">
-    {% if current_user.is_authenticated %}
-      <a href="{{ url_for('post') }}" class="btn btn-outline-info"  role="button">create post</a>
-    {% endif %}
-  </div>
+    <div class="col-md">
+        {% for post in posts %}
+        <div class="card" style="width: 54rem;">
+            <form method="POST">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.text}}</p>
+                </div>
+            </form>
+            <div>
+                <form method="GET">
+                    <button class="btn btn-outline-success" formaction="{{ url_for('edit_post', post_id=post.id)}}">
+                        Edit
+                    </button>
+                </form>
+                <form method="POST">
+                    <button class="btn btn-outline-danger" formaction="{{ url_for('remove_post', post_id=post.id)}}">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-sm">
+
+        <a href="{{ url_for('post') }}" class="btn btn-outline-info" role="button">create post</a>
+
+    </div>
 </div>
+{% else %}
+<div>only for personal usage</div>
+{% endif %}
 {% endblock app_content %}

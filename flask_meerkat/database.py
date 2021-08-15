@@ -70,9 +70,16 @@ def find_whitelist_by_email(email):
     return WhiteListEmail.query.filter_by(email=email).first()
 
 
-def delete_whitelist_email(email):
-    email = WhiteListEmail.query.find_by(email=email).first()
+def delete_whitelist_by_id(whitelist_id):
+    email = WhiteListEmail.query.get(int(whitelist_id))
     db.session.delete(email)
+    db.session.commit()
+    db.session.close()
+
+
+def update_whitelist(old_email, new_email):
+    email = find_whitelist_by_email(old_email)
+    email.email = new_email
     db.session.commit()
     db.session.close()
 

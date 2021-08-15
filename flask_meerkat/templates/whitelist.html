@@ -1,23 +1,29 @@
 {% extends "layout.html" %}
 {% block app_content %}
 {% if current_user.is_authenticated %}
-<div>
-        <form method="post" action="{{url_for('whitelist')}}">
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                 <legend class="border-bottom">Whitelist</legend>
+    <form method="post" action="{{url_for('whitelist')}}">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Whitelist</legend>
+            <div class="form-group">
                 {{ form.email.label(class="form-control-label") }}
                 {{ form.email(class="form-control form-control-lg") }}
                 {{ form.submit(class="form-control form-control-lg btn btn-outline-info") }}
-            </fieldset>
-        </form>
+            </div>
+        </fieldset>
+
+    </form>
     {% for email in emails %}
         <div class="card" style="width: 54rem;">
                <div class="card-body">
                     <h5 class="card-title">{{ email.email }}</h5>
-                </div>
+               </div>
+                <form method="POST">
+                    <button class="btn btn-outline-danger" formaction="{{ url_for('remove_whitelist_mail', whitelist_id=email.id)}}">
+                        Delete
+                    </button>
+                </form>
         </div>
     {% endfor %}
-</div>
 {% endif %}
 {% endblock app_content %}

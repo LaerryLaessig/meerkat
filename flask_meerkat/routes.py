@@ -6,7 +6,7 @@ from flask_meerkat import app
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_meerkat.database import insert_user, find_user_by_mail, update_user, get_all_posts, insert_post, \
     update_user_password_by_token, delete_post, find_post_by_id, update_post, find_whitelist, insert_whitlist_email, \
-    count_user, find_whitelist_by_email
+    count_user, find_whitelist_by_email, delete_whitelist_by_id
 from flask_meerkat.mail_client import send_password_reset_mail
 
 
@@ -82,6 +82,15 @@ def whitelist():
         elif request.method == 'POST' and form.validate_on_submit:
             insert_whitlist_email(form.email.data)
             return redirect(url_for('whitelist'))
+    else:
+        return redirect(url_for('home'))
+
+
+@app.route('/whitelist/<whitelist_id>/delete', methods=['POST'])
+def remove_whitelist_mail(whitelist_id):
+    if current_user.id == 1:
+        delete_whitelist_by_id(whitelist_id)
+        return redirect(url_for('whitelist'))
     else:
         return redirect(url_for('home'))
 

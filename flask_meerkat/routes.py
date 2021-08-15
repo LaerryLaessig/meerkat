@@ -1,10 +1,12 @@
 from flask import render_template, request, url_for, flash
 from werkzeug.utils import redirect
-from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm, RequestResetForm, PostForm, PasswordResetForm
+from flask_meerkat.forms import SignInForm, SignUpForm, AccountForm, RequestResetForm, PostForm, PasswordResetForm, \
+    AddWhiteListForm
 from flask_meerkat import app
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_meerkat.database import insert_user, find_user_by_mail, update_user, get_all_posts, insert_post, \
-    update_user_password_by_token, delete_post, find_post_by_id, update_post
+    update_user_password_by_token, delete_post, find_post_by_id, update_post, find_whitelist, insert_whitlist_email, \
+    count_user, find_whitelist_by_email
 from flask_meerkat.mail_client import send_password_reset_mail
 
 
@@ -69,6 +71,21 @@ def account():
     return render_template('account.html', form=form)
 
 
+@app.route('/whitelist', methods=['GET', 'POST'])
+@login_required
+def whitelist():
+    if current_user.id == 1:
+        form = AddWhiteListForm()
+        if request.method == 'GET':
+            emails = find_whitelist()
+            return render_template('whitelist.html', form=form, emails=emails)
+        elif request.method == 'POST' and form.validate_on_submit:
+            insert_whitlist_email(form.email.data)
+            return redirect(url_for('whitelist'))
+    else:
+        return redirect(url_for('home'))
+
+
 @app.route('/logout')
 def logout():
     logout_user()
@@ -106,10 +123,16 @@ def reset_password(token):
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
-    if request.method == 'POST' and form.validate_on_submit():
+    if request.method == 'POST' and\
+            form.validate_on_submit() and\
+            (count_user() == 0 or find_whitelist_by_email(form.data['email'])):
+        if count_user() == 0:
+            insert_whitlist_email(form.data['email'])
         insert_user(form.data)
         flash(message='Account created for {username}!'.format(username=form.username.data), category='success')
         return redirect(url_for('signin'))
+    else:
+        flash(message='Registration not allowed for {email}! Please contact admin.'.format(email=form.email.data), category='danger')
     return render_template('signup.html', form=form)
 
 

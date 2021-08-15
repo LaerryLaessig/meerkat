@@ -24,6 +24,14 @@ class User(db.Model, UserMixin):
         return serializer.dumps(self.id)
 
 
+class WhiteListEmail(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True)
+    email = db.Column('email', db.String)
+
+    def __init__(self, email):
+        self.email = email
+
+
 class Post(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     title = db.Column('title', db.String)

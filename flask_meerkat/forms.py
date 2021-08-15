@@ -79,3 +79,8 @@ class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     text = TextAreaField('Text', validators=[DataRequired()])
     submit = SubmitField('Save')
+
+
+class AddWhiteListForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Add')

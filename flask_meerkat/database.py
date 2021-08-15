@@ -3,7 +3,7 @@ import datetime
 from itsdangerous import Serializer, TimedSerializer
 from sqlalchemy import desc
 from flask_meerkat import db, login_manager, bcrypt, app
-from flask_meerkat.models import User, Post
+from flask_meerkat.models import User, Post, WhiteListEmail
 
 UTF_8 = 'utf-8'
 
@@ -50,6 +50,31 @@ def find_user_by_mail(email):
 
 def find_user_by_username(username):
     return User.query.filter_by(name=username).first()
+
+
+def count_user():
+    return User.query.count()
+
+
+def find_whitelist():
+    return WhiteListEmail.query.order_by(desc(WhiteListEmail.id)).all()
+
+
+def insert_whitlist_email(email):
+    db.session.add(WhiteListEmail(email=email))
+    db.session.commit()
+    db.session.close()
+
+
+def find_whitelist_by_email(email):
+    return WhiteListEmail.query.filter_by(email=email).first()
+
+
+def delete_whitelist_email(email):
+    email = WhiteListEmail.query.find_by(email=email).first()
+    db.session.delete(email)
+    db.session.commit()
+    db.session.close()
 
 
 def get_all_posts():

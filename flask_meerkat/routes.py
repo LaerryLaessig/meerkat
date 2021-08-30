@@ -64,7 +64,7 @@ def account():
     form = AccountForm()
     if request.method == 'POST' and form.validate_on_submit():
         flash(message='Update data!', category='success')
-        update_user(current_user.id, username=form.username.data, email=form.email.data)
+        update_user(current_user.id, username=form.username.data, new_email=form.email.data)
     else:
         form.username.data = current_user.name
         form.email.data = current_user.email

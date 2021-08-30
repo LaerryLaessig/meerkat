@@ -1,6 +1,6 @@
 import datetime
 
-from itsdangerous import Serializer, TimedSerializer
+from itsdangerous import TimedSerializer
 from sqlalchemy import desc
 from flask_meerkat import db, login_manager, bcrypt, app
 from flask_meerkat.models import User, Post, WhiteListEmail
@@ -17,22 +17,22 @@ def insert_user(user):
                         name=user['username'],
                         password=bcrypt.generate_password_hash(user['password']).decode(UTF_8)))
     db.session.commit()
-    db.session.close()
 
 
-def update_user(user_id, username, email):
+def update_user(user_id, username, new_email):
+    # db.session.expunge_all()
     user = User.query.filter_by(id=user_id).first()
+    email = find_whitelist_by_email(user.email)
+    email.email = new_email
     user.name = username
-    user.email = email
+    user.email = new_email
     db.session.commit()
-    db.session.close()
 
 
 def update_user_password_by_token(token, password):
     user = get_user_by_token(token)
     user.password = bcrypt.generate_password_hash(password).decode(UTF_8)
     db.session.commit()
-    db.session.close()
 
 
 def get_user_by_token(token):
@@ -63,7 +63,6 @@ def find_whitelist():
 def insert_whitlist_email(email):
     db.session.add(WhiteListEmail(email=email))
     db.session.commit()
-    db.session.close()
 
 
 def find_whitelist_by_email(email):
@@ -74,14 +73,12 @@ def delete_whitelist_by_id(whitelist_id):
     email = WhiteListEmail.query.get(int(whitelist_id))
     db.session.delete(email)
     db.session.commit()
-    db.session.close()
 
 
 def update_whitelist(old_email, new_email):
     email = find_whitelist_by_email(old_email)
     email.email = new_email
     db.session.commit()
-    db.session.close()
 
 
 def get_all_posts():
@@ -93,7 +90,6 @@ def insert_post(post, user_id):
                         text=post['text'],
                         user_id=user_id))
     db.session.commit()
-    db.session.close()
 
 
 def find_post_by_id(post_id):
@@ -107,14 +103,12 @@ def update_post(actual_post, new_post, user_id):
     post.text = new_post['text']
     post.date_posted = datetime.datetime.utcnow()
     db.session.commit()
-    db.session.close()
 
 
 def delete_post(post_id):
     post = Post.query.get(int(post_id))
     db.session.delete(post)
     db.session.commit()
-    db.session.close()
 
 
 @login_manager.user_loader

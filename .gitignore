@@ -1,6 +1,8 @@
 # ignore virtual env
 /venv/
 
+start.sh
+
 # ignore ide fies
 /.idea/
 __pycache__

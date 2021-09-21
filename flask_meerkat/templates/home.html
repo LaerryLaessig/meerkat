@@ -2,6 +2,9 @@
 {% block app_content %}
 {% if current_user.is_authenticated %}
 <div class="row">
+    <div class="col-sm">
+        <a href="{{ url_for('post') }}" class="btn btn-outline-info" role="button">create post</a>
+    </div>
     <div class="col-md">
         {% for post in posts %}
         <div class="card" style="width: 54rem;">
@@ -25,11 +28,6 @@
             </div>
         </div>
         {% endfor %}
-    </div>
-    <div class="col-sm">
-
-        <a href="{{ url_for('post') }}" class="btn btn-outline-info" role="button">create post</a>
-
     </div>
 </div>
 {% else %}

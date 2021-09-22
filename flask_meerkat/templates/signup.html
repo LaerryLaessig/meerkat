@@ -1,12 +1,16 @@
 {% extends "layout.html" %}
 {% block app_content %}
-<div>
-    <form method="POST" action="{{ url_for('signup') }}">
+    <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
+        <div class="text-center text-md-center mb-4 mt-md-0">
+            <h1 class="mb-0 h3">Register</h1>
+        </div>
+        <form method="POST" action="{{ url_for('signup') }}">
         {{ form.hidden_tag() }}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Register</legend>
-                <div class="form-group">
-                    {{ form.username.label(class="form-control-label") }}
+            <!-- Form -->
+            <div class="form-group mb-4">
+                {{ form.username.label(class="form-control-label") }}
+                <div class="input-group">
+                    <span class="input-group-text"><span class="fas fa-envelope"></span></span>
                         {% if form.username.errors %}
                             {{ form.username(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -15,12 +19,17 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.username(class="form-control form-control-lg") }}
+                            {{ form.username(class="form-control form-control-lg", placeholder="Username") }}
                         {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form.email.label(class="form-control-label") }}
-                        {% if form.email.errors %}
+            </div>
+            <!-- End of Form -->
+            <div class="form-group mb-4">
+            <!-- Form -->
+                {{ form.email.label(class="form-control-label") }}
+                <div class="input-group">
+                    <span class="input-group-text"><span class="fas fa-envelope"></span></span>
+                    {% if form.email.errors %}
                             {{ form.email(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
                                 {% for error in form.email.errors %}
@@ -28,11 +37,17 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.email(class="form-control form-control-lg") }}
+                            {{ form.email(class="form-control form-control-lg", placeholder="example@mail.com") }}
                         {% endif %}
                 </div>
-                <div class="form-group">
+            </div>
+            <!-- End of Form -->
+            <div class="form-group">
+                <!-- Form -->
+                <div class="form-group mb-4">
                     {{ form.password.label(class="form-control-label") }}
+                    <div class="input-group">
+                        <span class="input-group-text"><span class="fas fa-unlock-alt"></span></span>
                         {% if form.password.errors %}
                             {{ form.password(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -41,11 +56,16 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.password(class="form-control form-control-lg") }}
+                            {{ form.password(class="form-control form-control-lg", placeholder="Password") }}
                         {% endif %}
+                    </div>
                 </div>
-                <div class="form-group">
+                <!-- End of Form -->
+                <!-- Form -->
+                <div class="form-group mb-4">
                     {{ form.confirm_password.label(class="form-control-label") }}
+                    <div class="input-group">
+                        <span class="input-group-text"><span class="fas fa-unlock-alt"></span></span>
                         {% if form.confirm_password.errors %}
                             {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -54,18 +74,21 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.confirm_password(class="form-control form-control-lg") }}
+                            {{ form.confirm_password(class="form-control form-control-lg", placeholder="Confirm Password") }}
                         {% endif %}
+                    </div>
                 </div>
-        </fieldset>
-        <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+                <!-- End of Form -->
+            </div>
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+        <div class="d-flex justify-content-center align-items-center mt-4">
+            <span class="text-muted">
+                Already have an account?
+                Sign in <a href="{{ url_for('signin') }}">here</a>!
+            </span>
         </div>
-    </form>
-    <div class="border-top pt-3">
-    <small class="text-muted">
-        Sign in <a href="{{ url_for('signin') }}">here</a>!
-    </small>
-</div>
-</div>
+    </div>
 {% endblock app_content %}

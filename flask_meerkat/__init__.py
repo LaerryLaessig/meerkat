@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
+from flask_fontawesome import FontAwesome
 
 USER_ADMIN = os.getenv('USER_ADMIN')
 PWD_ADMIN = os.getenv('PWD_ADMIN')
@@ -28,6 +29,7 @@ login_manager.login_view = 'signin'
 login_manager.login_message_category = 'info'
 
 mail = Mail(app)
+fa = FontAwesome(app)
 
 Bootstrap(app)
 

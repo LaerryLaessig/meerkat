@@ -4,6 +4,7 @@
     <link rel="stylesheet"
           href="{{ url_for('.static', filename='custom_style.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {{ fontawesome_html() }}
 {% endblock styles %}
 {% block title %}Meerkat{% endblock title %}
 {% block navbar %}

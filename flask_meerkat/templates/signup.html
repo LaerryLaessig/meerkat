@@ -10,7 +10,7 @@
             <div class="form-group mb-4">
                 {{ form.username.label(class="form-control-label") }}
                 <div class="input-group">
-                    <span class="input-group-text"><span class="fas fa-envelope"></span></span>
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         {% if form.username.errors %}
                             {{ form.username(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -28,7 +28,7 @@
             <!-- Form -->
                 {{ form.email.label(class="form-control-label") }}
                 <div class="input-group">
-                    <span class="input-group-text"><span class="fas fa-envelope"></span></span>
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                     {% if form.email.errors %}
                             {{ form.email(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -47,7 +47,7 @@
                 <div class="form-group mb-4">
                     {{ form.password.label(class="form-control-label") }}
                     <div class="input-group">
-                        <span class="input-group-text"><span class="fas fa-unlock-alt"></span></span>
+                        <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                         {% if form.password.errors %}
                             {{ form.password(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -65,7 +65,7 @@
                 <div class="form-group mb-4">
                     {{ form.confirm_password.label(class="form-control-label") }}
                     <div class="input-group">
-                        <span class="input-group-text"><span class="fas fa-unlock-alt"></span></span>
+                        <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                         {% if form.confirm_password.errors %}
                             {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">

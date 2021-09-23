@@ -132,6 +132,8 @@ def reset_password(token):
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
+    if request.method == 'GET':
+        return render_template('signup.html', form=form)
     if request.method == 'POST' and\
             form.validate_on_submit() and\
             (count_user() == 0 or find_whitelist_by_email(form.data['email'])):

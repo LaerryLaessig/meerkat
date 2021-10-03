@@ -1,29 +1,41 @@
 {% extends "layout.html" %}
 {% block app_content %}
 {% if current_user.is_authenticated %}
+<div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
     <form method="post" action="{{url_for('whitelist')}}">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Whitelist</legend>
             <div class="form-group">
-                {{ form.email.label(class="form-control-label") }}
-                {{ form.email(class="form-control form-control-lg") }}
-                {{ form.submit(class="form-control form-control-lg btn btn-outline-info") }}
+                <div class="form-group mb-4">
+                    {{ form.email.label(class="form-control-label") }}
+                    <div class="input-group">
+                        <span class="input-group-text"><span class="fas fa-envelope"></span></span>
+                        {{ form.email(class="form-control form-control-lg", placeholder="example@mail.com") }}
+                    </div>
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-outline-primary") }}
+                    </div>
+                </div>
             </div>
         </fieldset>
 
     </form>
     {% for email in emails %}
-        <div class="card" style="width: 54rem;">
-               <div class="card-body">
-                    <h5 class="card-title">{{ email.email }}</h5>
-               </div>
-                <form method="POST">
-                    <button class="btn btn-outline-danger" formaction="{{ url_for('remove_whitelist_mail', whitelist_id=email.id)}}">
-                        Delete
-                    </button>
-                </form>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ email.email }}</h5>
         </div>
+        <div class="d-grid">
+            <form method="POST">
+                <button class="btn btn-outline-danger"
+                        formaction="{{ url_for('remove_whitelist_mail', whitelist_id=email.id)}}">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
     {% endfor %}
-{% endif %}
+    {% endif %}
+</div>
 {% endblock app_content %}

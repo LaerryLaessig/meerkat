@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block app_content %}
-<div>
+<div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
     <form method="POST" action="{{ url_for('edit_post', post_id=post.id) if post else url_for('post') }}">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">

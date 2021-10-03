@@ -1,18 +1,21 @@
 {% extends "layout.html" %}
 {% block app_content %}
 {% if current_user.is_authenticated %}
-<div class="row">
+<div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
     <div class="col-md">
         {% for post in posts %}
-        <div class="card" style="width: 54rem;">
-            <form method="POST">
+        <div class="d-grid" style="padding-bottom:1em;">
+            <a href="{{ url_for('post') }}" class="btn btn-outline-info" role="button">create post</a>
+        </div>
+        <div class="card" style="display: inline.flex;">
+            <form method="POST" style="padding-right:1em;">
                 <div class="card-body">
                     <h5 class="card-title">{{ post.title }}</h5>
-                    <p class="card-text">{{ post.text}}</p>
+                    <span class="card-text" style="white-space: pre-line">{{ post.text}}</span>
                 </div>
             </form>
-            <div>
-                <form method="GET">
+            <div class="d-grid" style="display:flex;">
+                <form method="GET" style="padding-right:1em;">
                     <button class="btn btn-outline-success" formaction="{{ url_for('edit_post', post_id=post.id)}}">
                         Edit
                     </button>
@@ -25,11 +28,6 @@
             </div>
         </div>
         {% endfor %}
-    </div>
-    <div class="col-sm">
-
-        <a href="{{ url_for('post') }}" class="btn btn-outline-info" role="button">create post</a>
-
     </div>
 </div>
 {% else %}

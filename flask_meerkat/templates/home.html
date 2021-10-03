@@ -3,7 +3,7 @@
 {% if current_user.is_authenticated %}
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
     <div class="d-grid" style="padding-bottom:1em;">
-            <a href="{{ url_for('post') }}" class="btn btn-outline-info" role="button">create post</a>
+            <a href="{{ url_for('post') }}" class="btn btn-outline-info" role="button">Create Post</a>
     </div>
     <div class="col-md">
         {% for post in posts %}

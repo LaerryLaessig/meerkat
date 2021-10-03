@@ -11,11 +11,17 @@
             {% endif %}
                 <div class="form-group">
                     {{ form.title.label(class="form-control-label") }}
-                    {{ form.title(class="form-control form-control-lg") }}
+                    <div class="input-group">
+                        <span class="input-group-text"><span class="fas fa-edit"></span></span>
+                        {{ form.title(class="form-control form-control-lg") }}
+                    </div>
                 </div>
                 <div class="form-group">
                     {{ form.text.label(class="form-control-label") }}
-                    {{ form.text(class="form-control form-control-lg", rows="10")}}
+                    <div class="input-group">
+                        <span class="input-group-text"><span class="fas fa-edit"></span></span>
+                        {{ form.text(class="form-control form-control-lg", rows="10")}}
+                    </div>
                 </div>
         </fieldset>
         <div class="form-group">

@@ -19,7 +19,7 @@ def post():
     if request.method == 'POST':
         insert_post(form.data, current_user.id)
         return redirect(url_for('home'))
-    return render_template('post.html', form=form)
+    return render_template('post/post.html', form=form)
 
 
 @app.route('/post/<post_id>/edit', methods=['GET', 'POST'])
@@ -29,7 +29,7 @@ def edit_post(post_id):
     if request.method == 'GET':
         form.title.data = post.title
         form.text.data = post.text
-        return render_template('post.html', form=form, post=post)
+        return render_template('post/post.html', form=form, post=post)
     elif request.method == 'POST':
         update_post(actual_post=post,
                     new_post=form.data,

@@ -20,7 +20,7 @@ def account():
     else:
         form.username.data = current_user.name
         form.email.data = current_user.email
-    return render_template('account.html', form=form)
+    return render_template('user/account.html', form=form)
 
 
 @app.route('/signin', methods=['GET', 'POST'])
@@ -32,7 +32,7 @@ def signin():
         login_user(find_user_by_mail(form.email.data), remember=form.remember.data)
         flash(message='Successful logged in!', category='success')
         return redirect(url_for('home'))
-    return render_template('signin.html', form=form)
+    return render_template('user/signin.html', form=form)
 
 
 @app.route('/logout')
@@ -66,14 +66,14 @@ def reset_password(token):
         except ValueError:
             flash(message='Invalid token', category='danger')
             return redirect(url_for('request_reset_password'))
-    return render_template('reset_password.html', token=token, form=form)
+    return render_template('user/reset_password.html', token=token, form=form)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
     if request.method == 'GET':
-        return render_template('signup.html', form=form)
+        return render_template('user/signup.html', form=form)
     if request.method == 'POST' and \
             form.validate_on_submit() and \
             (count_user() == 0 or find_whitelist_by_email(form.data['email'])):
@@ -85,4 +85,4 @@ def signup():
     else:
         flash(message='Registration not allowed for {email}! Please contact admin.'.format(email=form.email.data),
               category='danger')
-    return render_template('signup.html', form=form)
+    return render_template('user/signup.html', form=form)

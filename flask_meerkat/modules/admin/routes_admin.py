@@ -16,7 +16,7 @@ def whitelist():
         form = AddWhiteListForm()
         if request.method == 'GET':
             emails = find_whitelist()
-            return render_template('whitelist.html', form=form, emails=emails)
+            return render_template('admin/whitelist.html', form=form, emails=emails)
         elif request.method == 'POST' and form.validate_on_submit:
             insert_whitlist_email(form.email.data)
             return redirect(url_for('whitelist'))

@@ -35,9 +35,8 @@ Bootstrap(app)
 
 db = SQLAlchemy(app)
 
-from flask_meerkat import database
+import flask_meerkat.database
 from flask_meerkat import models
-from flask_meerkat import forms
-from flask_meerkat import routes
+import flask_meerkat.modules
 
 database.create_database()

@@ -1,25 +1,50 @@
 {% extends "layout.html" %}
 {% block app_content %}
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
-    <h4>Create Task</h4>
-        <form method="POST" action={{url_for('create_task')}}>
+    <form method="POST" action={{url_for('create_task')}}>
         {{ form.hidden_tag() }}
-        {{ form.title.label() }} {{ form.title }}<br>
-        {{ form.new_subtask }}
-        {{ form.remove_last_subtask }}<br>
-        {{ form.reviser.label }} {{ form.reviser }}<br>
-
+        <fieldset class="form-group">
+            {% if post %}
+            <legend class="border-bottom mb-4">Edit Task</legend>
+            {% else %}
+            <legend class="border-bottom mb-4">Create Task</legend>
+            {% endif %}
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                <div class="input-group">
+                    <span class="input-group-text"><span class="fas fa-edit"></span></span>
+                    {{ form.title(class="form-control form-control-lg") }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.reviser.label(class="form-control-label") }}
+                <div class="input-group">
+                    <span class="input-group-text"><span class="fas fa-user-check"></span></span>
+                    {{ form.reviser(class="form-control form-control-lg") }}
+                </div>
+            </div>
+            <div class="btn-group">
+                {{ form.new_subtask(class="btn btn-outline-primary btn-lg") }}
+                {{ form.remove_last_subtask(class="btn btn-outline-primary btn-lg") }}
+            </div>
+            <p>
+            <div class="form-group">
+            <label>Subtasks</label>
             {% for subtasks_form in form.subtasks %}
-                {{ subtasks_form.hidden_tag() }}
-                {{ subtasks_form.subtask }}
-                {{ subtasks_form.status.label() }}
-                {{ subtasks_form.status }}
-                <br>
+            {{ subtasks_form.hidden_tag() }}
+                <div class="input-group">
+                    <span class="input-group-text"><span class="fas fa-tasks"></span></span>
+                    {{ subtasks_form.subtask(class="form-control form-control-lg") }}
+                    <span class="input-group-text"><span class="fas fa-check-square"> {{subtasks_form.status.label()}}</span></span>
+                    <div class="input-group-text">{{ subtasks_form.status}}</div>
+                </div>
             {% endfor %}
-        {{ form.submit }}
-        </form>
+            </div>
+        </fieldset>
+        {{ form.submit(class="btn btn-outline-info") }}
+        <button class="btn btn-outline-warning" onclick="history.back()" type="reset">Cancel</button>
+    </form>
 </div>
-
 
 
 {% endblock app_content %}

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block app_content %}
+<div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
+    <h4>Create Task</h4>
+        <form method="POST" action={{url_for('create_task')}}>
+        {{ form.hidden_tag() }}
+        {{ form.title.label() }} {{ form.title }}<br>
+        {{ form.new_subtask }}
+        {{ form.remove_last_subtask }}<br>
+        {{ form.reviser.label }} {{ form.reviser }}<br>
+
+            {% for subtasks_form in form.subtasks %}
+                {{ subtasks_form.hidden_tag() }}
+                {{ subtasks_form.subtask }}
+                {{ subtasks_form.status.label() }}
+                {{ subtasks_form.status }}
+                <br>
+            {% endfor %}
+        {{ form.submit }}
+        </form>
+</div>
+
+
+
+{% endblock app_content %}

@@ -10,7 +10,7 @@ class SubTaskForm(FlaskForm):
 
 class TaskForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
-    reviser = SelectField('Reviser', choices=[('', ''), ('1', 'enno'), ('2', 'resi')])
+    reviser = SelectField('Reviser')
     subtasks = FieldList(FormField(SubTaskForm), min_entries=1, max_entries=25)
     new_subtask = SubmitField('+', render_kw={'formnovalidate': True})
     remove_last_subtask = SubmitField('-',  render_kw={'formnovalidate': True})

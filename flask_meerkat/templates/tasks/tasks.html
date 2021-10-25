@@ -2,8 +2,68 @@
 {% block app_content %}
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
     <h4>Tasks</h4>
-    <div class="d-grid" style="padding-bottom:1em;">
-            <a href="{{ url_for('create_task') }}" class="btn btn-outline-info" role="button">Create Task</a>
+    <div class="d-grid  btn-group" style="padding-bottom:1em;">
+        <a href="{{ url_for('create_task') }}" class="btn btn-outline-info" role="button">Create Task</a>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Filter
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% if filter == 'reviser' %}
+                        <a class="dropdown-item" href="{{ url_for('tasks', filter='reviser') }}"><i class="fas fa-check"></i> Reviser</a>
+                    {% else %}
+                        <a class="dropdown-item" href="{{ url_for('tasks', filter='reviser') }}">Reviser</a>
+                    {% endif %}
+                    {% if filter == 'creator' %}
+                        <a class="dropdown-item" href="{{ url_for('tasks', filter='creator') }}"><i class="fas fa-check"></i> Creator</a>
+                    {% else %}
+                        <a class="dropdown-item" href="{{ url_for('tasks', filter='creator') }}">Creator</a>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md">
+        {% for task in tasks %}
+        <div class="card" style="display: inline.flex;">
+            <form method="POST" style="padding-right:1em;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                    <span class="input-group-text"><span class="fas fa-user-check"> {{ task.reviser }}</span></span>
+                    <ul class="list-group list-group-flush">
+                        {% for subtask in task.subtasks %}
+                        {% if subtask.status %}
+                        <li class="list-group-item">
+                                    <span class="input-group-text">
+                                        <span class="fas fa-check-circle"> <s>{{ subtask.name }}</s></span>
+                                    </span>
+                        </li>
+                        {% else %}
+                        <li class="list-group-item">
+                                    <span class="input-group-text">
+                                        <span class="fas fa-times-circle"> {{ subtask.name }}</span>
+                                    </span>
+                        </li>
+                        {% endif%}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </form>
+            <div class="d-grid" style="display:flex;">
+                <form method="GET" style="padding-right:1em;">
+                    <button class="btn btn-outline-success" formaction="{{ url_for('edit_task', task_id=task.id)}}">
+                        Edit
+                    </button>
+                </form>
+                <form method="POST">
+                    <button class="btn btn-outline-danger" formaction="{{ url_for('remove_task', task_id=task.id, filter=filter) }}">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

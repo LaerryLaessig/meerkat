@@ -10,6 +10,10 @@ def create_database():
     db.create_all()
 
 
+def get_all_user():
+    return User.query.all()
+
+
 def insert_user(user):
     db.session.add(User(email=user['email'],
                         name=user['username'],
@@ -39,6 +43,10 @@ def get_user_by_token(token):
     except Exception as e:
         print(e)
         raise ValueError
+
+
+def get_user_by_user_id(user_id):
+    return User.query.get(int(user_id))
 
 
 def find_user_by_mail(email):

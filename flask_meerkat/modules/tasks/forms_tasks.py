@@ -11,10 +11,10 @@ class SubTaskForm(FlaskForm):
 class TaskForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     reviser = SelectField('Reviser')
-    subtasks = FieldList(FormField(SubTaskForm), min_entries=1, max_entries=25)
+    subtasks = FieldList(FormField(SubTaskForm), min_entries=0, max_entries=25)
     new_subtask = SubmitField('+', render_kw={'formnovalidate': True})
     remove_last_subtask = SubmitField('-',  render_kw={'formnovalidate': True})
-    submit = SubmitField('Save')
+    submit = SubmitField('Save', render_kw={'formnovalidate': True})
 
 
 

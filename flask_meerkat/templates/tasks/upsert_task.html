@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block app_content %}
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
-    <form method="POST" action={{url_for('create_task')}}>
+    <form method="POST" action="{{url_for('edit_task', task_id=task.id) if task else url_for('create_task')}}">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             {% if post %}
@@ -42,7 +42,7 @@
             </div>
         </fieldset>
         {{ form.submit(class="btn btn-outline-info") }}
-        <button class="btn btn-outline-warning" onclick="history.back()" type="reset">Cancel</button>
+        <a class="btn btn-outline-warning" href="{{ url_for('tasks') }}">Cancel</a>
     </form>
 </div>
 

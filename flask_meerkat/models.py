@@ -64,7 +64,7 @@ class Subtask(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String)
     status = db.Column('status', db.String)
-    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id', ondelete='CASCADE'))
     task = relationship('Task', back_populates='subtasks')
 
     def __init__(self, name, status):

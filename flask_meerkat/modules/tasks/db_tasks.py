@@ -18,16 +18,14 @@ def insert_task(new_task, creator_id):
     db.session.commit()
 
 
-def update_task(actual_task, new_task, user_id):
+def update_task(actual_task, new_task):
     task = Task.query.get(int(actual_task.id))
-    task.user_id = user_id
     task.title = new_task['title']
     task.reviser_id = new_task['reviser']
     subtasks = []
     for subtask in new_task['subtasks']:
         subtasks.append(Subtask(name=subtask['subtask'], status=subtask['status']))
     task.subtasks = subtasks
-    task.creator_id = user_id
     db.session.commit()
 
 

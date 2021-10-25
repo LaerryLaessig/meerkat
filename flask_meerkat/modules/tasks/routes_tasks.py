@@ -66,8 +66,7 @@ def edit_task(task_id):
             form.subtasks.pop_entry()
     if form.submit.data:
         update_task(actual_task=task,
-                    new_task=form.data,
-                    user_id=current_user.id)
+                    new_task=form.data)
         return redirect(url_for('tasks'))
     return render_template('tasks/upsert_task.html', form=form, task=task)
 

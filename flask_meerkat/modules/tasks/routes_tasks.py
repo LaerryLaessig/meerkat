@@ -9,6 +9,7 @@ from flask_meerkat.modules.tasks.db_tasks import insert_task, get_task_by_revise
     delete_task, get_task_by_creator_id
 from flask_meerkat.database import get_all_user, get_user_by_user_id
 from flask_meerkat.modules.tasks.forms_tasks import TaskForm
+from flask_meerkat.modules.tasks.mail import send_new_task_mail
 
 
 @app.route('/tasks', methods=['GET', 'POST'])
@@ -39,6 +40,7 @@ def create_task():
             form.subtasks.pop_entry()
     elif request.method == 'POST':
         insert_task(form.data, current_user.id)
+        send_new_task_mail(get_user_by_user_id(form.data['reviser']).email)
         return redirect(url_for('tasks'))
     return render_template('tasks/upsert_task.html', form=form)
 

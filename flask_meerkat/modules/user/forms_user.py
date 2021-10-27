@@ -4,11 +4,11 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 from flask_meerkat import bcrypt
-from ...database import find_user_by_mail, find_user_by_username
+from ...database import get_user_by_mail, get_user_by_username
 
 
 def check_password(form, field):
-    user = find_user_by_mail(form.email.data)
+    user = get_user_by_mail(form.email.data)
     if user is None or not bcrypt.check_password_hash(user.password, field.data):
         raise ValidationError('Username or password is incorrect')
 
@@ -28,11 +28,11 @@ class SignUpForm(FlaskForm):
     submit = SubmitField('Sign up')
 
     def validate_email(self, email):
-        if find_user_by_mail(email.data) is not None:
+        if get_user_by_mail(email.data) is not None:
             raise ValidationError('Email adress already exists')
 
     def validate_username(self, username):
-        if find_user_by_username(username.data) is not None:
+        if get_user_by_username(username.data) is not None:
             raise ValidationError('Username already exists')
 
 
@@ -50,11 +50,11 @@ class AccountForm(FlaskForm):
     submit = SubmitField('Update')
 
     def validate_email(self, email):
-        if find_user_by_mail(email.data) is not None and current_user.email != email.data:
+        if get_user_by_mail(email.data) is not None and current_user.email != email.data:
             raise ValidationError('Email adress already exists')
 
     def validate_username(self, username):
-        if find_user_by_username(username.data) is not None and current_user.name != username.data:
+        if get_user_by_username(username.data) is not None and current_user.name != username.data:
             raise ValidationError('Username already exists')
 
 
@@ -63,7 +63,7 @@ class RequestResetForm(FlaskForm):
     submit = SubmitField('Send')
 
     def validate_email(self, email):
-        if find_user_by_mail(email.data) is None:
+        if get_user_by_mail(email.data) is None:
             raise ValidationError('Unknown email adress')
 
 

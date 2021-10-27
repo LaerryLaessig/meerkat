@@ -14,7 +14,7 @@ class TaskForm(FlaskForm):
     subtasks = FieldList(FormField(SubTaskForm), min_entries=0, max_entries=25)
     new_subtask = SubmitField('+', render_kw={'formnovalidate': True})
     remove_last_subtask = SubmitField('-',  render_kw={'formnovalidate': True})
-    submit = SubmitField('Save', render_kw={'formnovalidate': True})
+    submit = SubmitField('Save', render_kw={'novalidate': True})
 
 
 

@@ -17,7 +17,7 @@ def insert_post(post, user_id):
     db.session.commit()
 
 
-def find_post_by_id(post_id):
+def get_post_by_id(post_id):
     return Post.query.get(int(post_id))
 
 

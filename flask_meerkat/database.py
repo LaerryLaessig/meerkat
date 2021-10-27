@@ -1,7 +1,7 @@
 from itsdangerous import TimedSerializer
 from sqlalchemy import desc
 from flask_meerkat import db, login_manager, bcrypt, app
-from flask_meerkat.models import User, Post, WhiteListEmail
+from flask_meerkat.models import User, WhiteListEmail
 
 UTF_8 = 'utf-8'
 
@@ -23,7 +23,7 @@ def insert_user(user):
 
 def update_user(user_id, username, new_email):
     user = User.query.filter_by(id=user_id).first()
-    email = find_whitelist_by_email(user.email)
+    email = get_whitelist_by_email(user.email)
     email.email = new_email
     user.name = username
     user.email = new_email
@@ -49,11 +49,11 @@ def get_user_by_user_id(user_id):
     return User.query.get(int(user_id))
 
 
-def find_user_by_mail(email):
+def get_user_by_mail(email):
     return User.query.filter_by(email=email).first()
 
 
-def find_user_by_username(username):
+def get_user_by_username(username):
     return User.query.filter_by(name=username).first()
 
 
@@ -61,16 +61,16 @@ def count_user():
     return User.query.count()
 
 
-def find_whitelist():
+def get_whitelist():
     return WhiteListEmail.query.order_by(desc(WhiteListEmail.id)).all()
 
 
-def insert_whitlist_email(email):
+def insert_whitelist_email(email):
     db.session.add(WhiteListEmail(email=email))
     db.session.commit()
 
 
-def find_whitelist_by_email(email):
+def get_whitelist_by_email(email):
     return WhiteListEmail.query.filter_by(email=email).first()
 
 
@@ -81,7 +81,7 @@ def delete_whitelist_by_id(whitelist_id):
 
 
 def update_whitelist(old_email, new_email):
-    email = find_whitelist_by_email(old_email)
+    email = get_whitelist_by_email(old_email)
     email.email = new_email
     db.session.commit()
 

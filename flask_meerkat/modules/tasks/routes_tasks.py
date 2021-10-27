@@ -12,19 +12,28 @@ from flask_meerkat.modules.tasks.forms_tasks import TaskForm
 from flask_meerkat.modules.tasks.mail import send_new_task_mail
 
 
+def action_subtasks(form):
+    if form.new_subtask.data:
+        if len(form.subtasks) < 25:
+            form.subtasks.append_entry()
+    elif form.remove_last_subtask.data:
+        if len(form.subtasks) > 0:
+            form.subtasks.pop_entry()
+
+
 @app.route('/tasks', methods=['GET', 'POST'])
 @login_required
 def tasks():
     task_filter = 'reviser' if request.args.get('filter') is None else request.args.get('filter')
     tasks_to_show = get_task_by_creator_id(current_user.id) if task_filter == 'creator' \
         else get_task_by_reviser_id(current_user.id)
-    tasks = [{'title': task.title,
-              'id': task.id,
-              'subtasks': [{'name': s.name,
-                            'status': True if int(s.status) == 1 else False} for s in task.subtasks],
-              'reviser': get_user_by_user_id(task.reviser_id).name}
-             for task in tasks_to_show]
-    return render_template('tasks/tasks.html', tasks=tasks, filter=task_filter)
+    task_form_value = [{'title': task.title,
+                        'id': task.id,
+                        'subtasks': [{'name': s.name,
+                                      'status': True if int(s.status) == 1 else False} for s in task.subtasks],
+                        'reviser': get_user_by_user_id(task.reviser_id).name}
+                       for task in tasks_to_show]
+    return render_template('tasks/tasks.html', tasks=task_form_value, filter=task_filter)
 
 
 @app.route('/task', methods=['GET', 'POST'])
@@ -32,13 +41,8 @@ def tasks():
 def create_task():
     form = TaskForm()
     form.reviser.choices = ([(user.id, user.name) for user in get_all_user()])
-    if form.new_subtask.data:
-        if len(form.subtasks) < 25:
-            form.subtasks.append_entry()
-    elif form.remove_last_subtask.data:
-        if len(form.subtasks) > 0:
-            form.subtasks.pop_entry()
-    elif request.method == 'POST':
+    action_subtasks(form=form)
+    if form.submit.data:
         insert_task(form.data, current_user.id)
         send_new_task_mail(get_user_by_user_id(form.data['reviser']).email)
         return redirect(url_for('tasks'))
@@ -60,12 +64,7 @@ def edit_task(task_id):
         for s in task.subtasks:
             form.subtasks.append_entry(data={'subtask': s.name, 'status': True if int(s.status) == 1 else False})
         return render_template('tasks/upsert_task.html', form=form, task=task)
-    if form.new_subtask.data:
-        if len(form.subtasks) < 25:
-            form.subtasks.append_entry()
-    elif form.remove_last_subtask.data:
-        if len(form.subtasks) > 0:
-            form.subtasks.pop_entry()
+    action_subtasks(form=form)
     if form.submit.data:
         update_task(actual_task=task,
                     new_task=form.data)

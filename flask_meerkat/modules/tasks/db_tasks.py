@@ -7,14 +7,10 @@ def get_task_by_id(task_id):
 
 
 def insert_task(new_task, creator_id):
-    subtasks = []
-    for subtask in new_task['subtasks']:
-        subtasks.append(Subtask(name=subtask['subtask'], status=subtask['status']))
-    task = Task(title=new_task['title'],
-                subtasks=subtasks,
-                reviser_id=new_task['reviser'],
-                creator_id=creator_id)
-    db.session.add(task)
+    db.session.add(Task(title=new_task['title'],
+                        subtasks=[Subtask(name=s['subtask'], status=s['status']) for s in new_task['subtasks']],
+                        reviser_id=new_task['reviser'],
+                        creator_id=creator_id))
     db.session.commit()
 
 
@@ -22,10 +18,7 @@ def update_task(actual_task, new_task):
     task = Task.query.get(int(actual_task.id))
     task.title = new_task['title']
     task.reviser_id = new_task['reviser']
-    subtasks = []
-    for subtask in new_task['subtasks']:
-        subtasks.append(Subtask(name=subtask['subtask'], status=subtask['status']))
-    task.subtasks = subtasks
+    task.subtasks = [Subtask(name=s['subtask'], status=s['status']) for s in new_task['subtasks']]
     db.session.commit()
 
 

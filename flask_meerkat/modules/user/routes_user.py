@@ -3,9 +3,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import redirect
 
 from flask_meerkat import app
-from flask_meerkat.database import insert_user, find_user_by_mail, update_user, update_user_password_by_token, \
-    insert_whitlist_email, \
-    count_user, find_whitelist_by_email
+from flask_meerkat.database import insert_user, get_user_by_mail, update_user, update_user_password_by_token, \
+    insert_whitelist_email, \
+    count_user, get_whitelist_by_email
 from .forms_user import SignInForm, SignUpForm, AccountForm, RequestResetForm, PasswordResetForm
 from .mail.mail_client import send_password_reset_mail
 
@@ -14,7 +14,7 @@ from .mail.mail_client import send_password_reset_mail
 @login_required
 def account():
     form = AccountForm()
-    if request.method == 'POST' and form.validate_on_submit():
+    if form.validate_on_submit():
         flash(message='Update data!', category='success')
         update_user(current_user.id, username=form.username.data, new_email=form.email.data)
     else:
@@ -28,8 +28,8 @@ def signin():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = SignInForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        login_user(find_user_by_mail(form.email.data), remember=form.remember.data)
+    if form.validate_on_submit():
+        login_user(get_user_by_mail(form.email.data), remember=form.remember.data)
         flash(message='Successful logged in!', category='success')
         return redirect(url_for('home'))
     return render_template('user/signin.html', form=form)
@@ -45,8 +45,8 @@ def logout():
 @app.route('/reset_password', methods=['GET', 'POST'])
 def request_reset_password():
     form = RequestResetForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        token = find_user_by_mail(form.email.data).get_reset_token()
+    if form.validate_on_submit():
+        token = get_user_by_mail(form.email.data).get_reset_token()
         send_password_reset_mail(form.email.data, url_for('reset_password', token=token, _external=True))
         flash(message='Send reset email to {email}!'.format(email=form.email.data), category='success')
         return redirect(url_for('signin'))
@@ -58,7 +58,7 @@ def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = PasswordResetForm()
-    if request.method == 'POST' and form.validate_on_submit():
+    if form.validate_on_submit():
         try:
             update_user_password_by_token(token, form.password.data)
             flash(message='Password changed', category='success')
@@ -74,11 +74,10 @@ def signup():
     form = SignUpForm()
     if request.method == 'GET':
         return render_template('user/signup.html', form=form)
-    if request.method == 'POST' and \
-            form.validate_on_submit() and \
-            (count_user() == 0 or find_whitelist_by_email(form.data['email'])):
+    if form.validate_on_submit() and \
+            (count_user() == 0 or get_whitelist_by_email(form.data['email'])):
         if count_user() == 0:
-            insert_whitlist_email(form.data['email'])
+            insert_whitelist_email(form.data['email'])
         insert_user(form.data)
         flash(message='Account created for {username}!'.format(username=form.username.data), category='success')
         return redirect(url_for('signin'))

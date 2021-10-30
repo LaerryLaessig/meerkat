@@ -35,15 +35,15 @@
                         {% for subtask in task.subtasks %}
                         {% if subtask.status %}
                         <li class="list-group-item">
-                                    <span class="input-group-text">
-                                        <span class="fas fa-check-circle"> <s>{{ subtask.name }}</s></span>
-                                    </span>
+                                    <div class="input-group-text" style="white-space: pre-wrap;">
+                                        <span class="fas fa-check-circle" style="word-wrap: break-word;"> <s>{{ subtask.name }}</s></span>
+                                    </div>
                         </li>
                         {% else %}
                         <li class="list-group-item">
-                                    <span class="input-group-text">
+                                    <div class="input-group-text" style="white-space: pre-wrap;">
                                         <span class="fas fa-times-circle"> {{ subtask.name }}</span>
-                                    </span>
+                                    </div>
                         </li>
                         {% endif%}
                         {% endfor %}

@@ -56,6 +56,8 @@ def edit_task(task_id):
     form.reviser.choices = [(user.id, user.name) for user in get_all_user()]
     task = get_task_by_id(task_id)
     if request.method == 'GET':
+        if current_user.id != task.creator_id and current_user.id != task.reviser_id:
+            return redirect(url_for('tasks'))
         form.reviser.default = task.reviser_id
         form.process()
         form.title.data = task.title

@@ -33,7 +33,7 @@ Website to create blog posts and tasks for different user.
 - account
   - user can edit there username and email address
 
-## dependenvies
+## dependencies
 - flask
   - micro web framework
   - https://palletsprojects.com/p/flask/

@@ -1,9 +1,9 @@
-from werkzeug.utils import redirect
 
 from flask_meerkat import app
 
 from flask import render_template
 from flask_login import login_required
+from flask_meerkat.modules.recipes.forms_recipes import RecipeForm
 
 
 @app.route('/recipes', methods=['GET', 'POST'])
@@ -15,4 +15,12 @@ def recipes():
 @app.route('/recipe', methods=['GET'])
 @login_required
 def create_recipe():
-    return render_template('recipes/upsert_recipe.html')
+    form = RecipeForm()
+    return render_template('recipes/upsert_recipe.html', form=form)
+
+
+@app.route('/recipe', methods=['GET'])
+@login_required
+def edit_recipe():
+    form = RecipeForm()
+    return render_template('recipes/upsert_recipe.html', form=form)

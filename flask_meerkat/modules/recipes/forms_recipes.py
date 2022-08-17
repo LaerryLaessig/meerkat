@@ -1,19 +1,19 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, FieldList, FormField, BooleanField, SelectField
+from wtforms import StringField, SubmitField, FieldList, FormField, TextAreaField
 from wtforms.validators import DataRequired
 
 
-class SubTaskForm(FlaskForm):
-    subtask = StringField('Subtask', validators=[DataRequired()])
-    status = BooleanField('Status')
+class IngredientForm(FlaskForm):
+    ingredient = StringField('Ingredient', validators=[DataRequired()])
+    amount = StringField('Amount')
 
 
-class TaskForm(FlaskForm):
+class RecipeForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
-    reviser = SelectField('Reviser')
-    subtasks = FieldList(FormField(SubTaskForm), min_entries=0, max_entries=25)
-    new_subtask = SubmitField('+', render_kw={'formnovalidate': True})
-    remove_last_subtask = SubmitField('-',  render_kw={'formnovalidate': True})
+    ingredients = FieldList(FormField(IngredientForm), min_entries=0, max_entries=25)
+    instruction = TextAreaField('Instruction', validators=[DataRequired()])
+    new_ingredient = SubmitField('+', render_kw={'formnovalidate': True})
+    remove_last_ingredient = SubmitField('-',  render_kw={'formnovalidate': True})
     submit = SubmitField('Save', render_kw={'novalidate': True})
 
 

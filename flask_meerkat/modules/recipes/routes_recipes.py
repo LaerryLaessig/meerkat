@@ -1,10 +1,10 @@
 
 from flask_meerkat import app
 
-from flask import render_template
-from flask_login import login_required
+from flask import render_template, redirect, url_for
+from flask_login import login_required, current_user
 
-from flask_meerkat.modules.recipes.db_recipes import get_recipe_by_id
+from flask_meerkat.modules.recipes.db_recipes import get_recipe_by_id, insert_recipe
 from flask_meerkat.modules.recipes.forms_recipes import RecipeForm, SearchRecipesForm
 
 
@@ -29,6 +29,9 @@ def recipes():
 def create_recipe():
     form = RecipeForm()
     action_ingredients(form=form)
+    if got_submit_data(form):
+        insert_recipe(form.data, current_user.id)
+        return redirect(url_for('recipes'))
     return render_template('recipes/upsert_recipe.html', form=form)
 
 
@@ -36,6 +39,10 @@ def create_recipe():
 @login_required
 def edit_recipe(recipe_id):
     form = RecipeForm()
-    recipe = get_recipe_by_id(recipe_id)
+    recipe = get_recipe_by_id(recipe_id, current_user.id)
     action_ingredients(form=form)
     return render_template('recipes/upsert_recipe.html', form=form, recipe=recipe)
+
+
+def got_submit_data(form):
+    return form.submit.data

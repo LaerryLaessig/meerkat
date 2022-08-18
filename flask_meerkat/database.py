@@ -45,12 +45,16 @@ def get_user_by_token(token):
         raise ValueError
 
 
-def get_username_by_user_id(user_id):
-    return User.query.get(int(user_id)).name
-
-
 def get_user_by_user_id(user_id):
     return User.query.get(int(user_id))
+
+
+def get_username_by_user_id(user_id):
+    return get_user_by_user_id(user_id).name
+
+
+def get_user_email_by_user_id(user_id):
+    return get_user_by_user_id(user_id).email
 
 
 def get_user_by_mail(email):

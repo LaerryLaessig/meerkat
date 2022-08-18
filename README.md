@@ -1,6 +1,6 @@
 # Simple blog and task manage system
 
-Website to create blog posts and tasks for different user.
+Website to create blog posts, recipes and tasks for different user.
 
 ## enviroment variables
 - SECRET_KEY

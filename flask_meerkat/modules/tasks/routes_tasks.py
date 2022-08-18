@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 
 from flask_meerkat.modules.tasks.db_tasks import insert_task, get_task_by_reviser_id, get_task_by_id, update_task, \
     delete_task, get_task_by_creator_id
-from flask_meerkat.database import get_all_user, get_user_by_user_id
+from flask_meerkat.database import get_all_user, get_user_by_user_id, get_username_by_user_id
 from flask_meerkat.modules.tasks.forms_tasks import TaskForm
 from flask_meerkat.modules.tasks.mail import send_new_task_mail
 
@@ -31,7 +31,8 @@ def tasks():
                         'id': task.id,
                         'subtasks': [{'name': s.name,
                                       'status': True if int(s.status) == 1 else False} for s in task.subtasks],
-                        'reviser': get_user_by_user_id(task.reviser_id).name}
+                        'reviser': get_username_by_user_id(task.reviser_id),
+                        'creator': get_username_by_user_id(task.creator_id)}
                        for task in tasks_to_show]
     return render_template('tasks/tasks.html', tasks=task_form_value, filter=task_filter)
 

@@ -2,15 +2,17 @@
 {% block app_content %}
 {% if current_user.is_authenticated %}
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
+    <h1 class="h4">Home</h1>
     <div class="d-grid" style="padding-bottom:1em;">
             <a href="{{ url_for('post') }}" class="btn btn-outline-info" role="button">Create Post</a>
     </div>
     <div class="col-md">
         {% for post in posts %}
+        <span class="author-right ">created by {{ post.creator }}</span>
         <div class="card" style="display: inline.flex;">
             <form method="POST" style="padding-right:1em;">
                 <div class="card-body">
-                    <h5 class="card-title">{{ post.title }}</h5>
+                    <h2 class="card-title h5">{{ post.title }}</h2>
                     <span class="card-text" style="white-space: pre-line">{{ post.text}}</span>
                 </div>
             </form>

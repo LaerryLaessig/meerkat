@@ -26,6 +26,7 @@
     </div>
     <div class="col-md">
         {% for task in tasks %}
+        <span class="author-right ">created by {{ task.creator }}</span>
         <div class="card" style="display: inline.flex;">
             <form method="POST" style="padding-right:1em;">
                 <div class="card-body">

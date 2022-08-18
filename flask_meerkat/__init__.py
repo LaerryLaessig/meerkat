@@ -9,6 +9,7 @@ from flask_fontawesome import FontAwesome
 
 USER_ADMIN = os.getenv('USER_ADMIN')
 PWD_ADMIN = os.getenv('PWD_ADMIN')
+SERVER_DOMAIN = os.getenv('SERVER_DOMAIN')
 
 IMAGE_FOLDER = os.path.join('flask_quiz', 'static', 'images')
 

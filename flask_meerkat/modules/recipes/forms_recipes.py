@@ -17,4 +17,8 @@ class RecipeForm(FlaskForm):
     submit = SubmitField('Save', render_kw={'novalidate': True})
 
 
+class SearchRecipesForm(FlaskForm):
+    searchword = StringField('Searchword', validators=[DataRequired()])
+    submit = SubmitField('Search', render_kw={'novalidate': True})
+
 

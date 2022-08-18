@@ -15,12 +15,25 @@
                 {{ form.remove_last_ingredient(class="btn btn-outline-primary btn-lg") }}
             </div>
             <div class="form-group">
+                <label>Ingredients</label>
+                {% for ingredients_form in form.ingredients %}
+                {{ ingredients_form.hidden_tag() }}
+                    <div class="input-group">
+                        <span class="input-group-text"><span class="fas fa-shopping-basket icon-label"></span>{{ingredients_form.ingredient.label()}}</span>
+                        {{ ingredients_form.ingredient(class="form-control form-control-lg") }}
+                        <span class="input-group-text"><span class="fas fa-balance-scale icon-label"></span>{{ingredients_form.amount.label()}}</span>
+                        <div class="input-group-text">{{ ingredients_form.amount}}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
                     {{ form.instruction.label(class="form-control-label") }}
                 <div class="input-group">
                     <span class="input-group-text"><span class="fas fa-edit"></span></span>
                         {{ form.instruction(class="form-control form-control-lg", rows="15")}}
                 </div>
             </div>
+        {{ form.submit(class="btn btn-outline-info") }}
         <a class="btn btn-outline-warning" href="{{ url_for('recipes') }}">Cancel</a>
     </form>
 </div>

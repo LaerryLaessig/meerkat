@@ -3,11 +3,20 @@
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
     <h1 class="h4">Recipes</h1>
     <div class="d-grid  btn-group" style="padding-bottom:1em;">
-        <a href="{{ url_for('create_recipe') }}" class="btn btn-outline-info" role="button">Create Recipe</a>
+
     </div>
     <div class="col-md">
         <div class="card-body">
-            <h2 class="h5">Recipe</h2>
+            <form>
+                <div class="form-group">
+                    {{ form.searchword.label(class="form-control-label") }}
+                    <div class="input-group">
+                        <span class="input-group-text"><span class="fas fa-search"></span></span>
+                        {{ form.searchword(class="form-control form-control-lg") }}
+                    </div>
+                </div>
+                {{ form.submit(class="btn btn-outline-info") }} <a href="{{ url_for('create_recipe') }}" class="btn btn-outline-success" role="button">Create New Recipe</a>
+            </form>
         </div>
     </div>
 </div>

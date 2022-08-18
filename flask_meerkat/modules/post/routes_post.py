@@ -5,11 +5,16 @@ from flask_meerkat import app
 from .db_post import insert_post, get_all_posts, \
     delete_post, get_post_by_id, update_post
 from flask_meerkat.modules.post.forms_post import PostForm
+from ...database import get_username_by_user_id
 
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html', posts=get_all_posts())
+    return render_template('home.html', posts=[{
+        'id': p.id,
+        'title': p.title,
+        'text': p.text,
+        'creator': get_username_by_user_id(p.user_id)} for p in get_all_posts()])
 
 
 @app.route('/post', methods=['GET', 'POST'])

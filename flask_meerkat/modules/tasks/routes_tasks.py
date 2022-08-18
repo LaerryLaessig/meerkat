@@ -27,7 +27,7 @@ def create_task():
     if got_submit_data(form):
         insert_task(form.data, current_user.id)
         send_new_task_mail(get_user_email_by_user_id(form.data['reviser']))
-        return redirect(url_for('tasks'))
+        return redirect_to_tasks()
     return render_template('tasks/upsert_task.html', form=form)
 
 
@@ -38,14 +38,13 @@ def edit_task(task_id):
     task = get_task_by_id(task_id)
     if is_request_GET(request):
         if is_current_user_not_creator_and_not_reviser(task):
-            return render_tasks()
-        set_default_values(form, task)
-        set_subtasks(form, task)
+            return redirect_to_tasks()
+        set_values(form, task)
         return render_upsert_task_with_form_task(form, task)
     action_subtasks(form=form)
     if got_submit_data(form):
         update_task(actual_task=task, new_task=form.data)
-        return render_tasks()
+        return redirect_to_tasks()
     return render_upsert_task_with_form_task(form, task)
 
 
@@ -56,7 +55,7 @@ def remove_task(task_id):
     return redirect(url_for('tasks', filter=request.args.get('filter')))
 
 
-def render_tasks():
+def redirect_to_tasks():
     return redirect(url_for('tasks'))
 
 
@@ -99,12 +98,13 @@ def is_current_user_not_creator_and_not_reviser(task):
     return current_user.id != task.creator_id and current_user.id != task.reviser_id
 
 
-def set_default_values(form, task):
+def set_values(form, task):
     form.reviser.default = task.reviser_id
     form.process()
     form.title.data = task.title
     selected_reviser = get_user_by_user_id(task.reviser_id)
     form.reviser.default = [selected_reviser.id, selected_reviser.id]
+    set_subtasks(form, task)
 
 
 def set_subtasks(form, task):

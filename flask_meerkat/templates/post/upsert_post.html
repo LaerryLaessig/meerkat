@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 {% block app_content %}
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
+    <h1 class="h4">Whitelist</h1>
+        {% if post %}
+            <h1 class="h4">Edit Post</h1>
+        {% else %}
+            <h1 class="h4">Create Post</h1>
+        {% endif %}
     <form method="POST" action="{{ url_for('edit_post', post_id=post.id) if post else url_for('post') }}">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            {% if post %}
-                <legend class="border-bottom mb-4">Edit Post</legend>
-            {% else %}
-                <legend class="border-bottom mb-4">Create Post</legend>
-            {% endif %}
+
                 <div class="form-group">
                     {{ form.title.label(class="form-control-label") }}
                     <div class="input-group">

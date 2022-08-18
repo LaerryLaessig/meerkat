@@ -72,3 +72,28 @@ class Subtask(db.Model):
         self.status = status
 
 
+class Recipe(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True)
+    title = db.Column('title', db.String)
+    ingredients = relationship('Ingredient', back_populates='recipe')
+    instruction = db.Column('instruction', db.String)
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __init__(self, title, ingredients, instruction, creator_id):
+        self.title = title
+        self.ingredients = ingredients
+        self.instruction = instruction
+        self.creator_id = creator_id
+
+
+class Ingredient(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True)
+    name = db.Column('name', db.String)
+    amount = db.Column('amount', db.String)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id', ondelete='CASCADE'))
+    recipe = relationship('Recipe', back_populates='ingredients')
+
+    def __init__(self, name, amount):
+        self.name = name
+        self.amount = amount
+

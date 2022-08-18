@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 {% block app_content %}
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
+    <h1 class="mb-0 h4">Account data</h1>
     <form method="POST" action="{{ url_for('account') }}">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            <legend class="border-bottom">Account data</legend>
+
             <div class="form-group mb-4">
                 {{ form.username.label(class="form-control-label") }}
                 <div class="input-group">

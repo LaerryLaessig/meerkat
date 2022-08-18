@@ -2,10 +2,10 @@
 {% block app_content %}
 {% if current_user.is_authenticated %}
 <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
+    <h1 class="h4">Whitelist</h1>
     <form method="post" action="{{url_for('whitelist')}}">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Whitelist</legend>
             <div class="form-group">
                 <div class="form-group mb-4">
                     {{ form.email.label(class="form-control-label") }}
@@ -24,7 +24,7 @@
     {% for email in emails %}
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">{{ email.email }}</h5>
+            <h2 class="card-title h5">{{ email.email }}</h2>
         </div>
         <div class="d-grid">
             <form method="POST">

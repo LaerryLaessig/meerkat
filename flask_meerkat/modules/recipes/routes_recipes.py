@@ -1,10 +1,11 @@
 
 from flask_meerkat import app
 
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 
-from flask_meerkat.modules.recipes.db_recipes import get_recipe_by_id, insert_recipe
+from flask_meerkat.database import get_username_by_user_id
+from flask_meerkat.modules.recipes.db_recipes import get_recipe_by_id, insert_recipe, find_recipes_by_title
 from flask_meerkat.modules.recipes.forms_recipes import RecipeForm, SearchRecipesForm
 
 
@@ -20,8 +21,7 @@ def action_ingredients(form):
 @app.route('/recipes', methods=['GET', 'POST'])
 @login_required
 def recipes():
-    form = SearchRecipesForm()
-    return render_template('recipes/recipes.html', form=form)
+    return render_template('recipes/recipes.html', form=SearchRecipesForm())
 
 
 @app.route('/recipe', methods=['GET', 'POST'])
@@ -33,6 +33,17 @@ def create_recipe():
         insert_recipe(form.data, current_user.id)
         return redirect(url_for('recipes'))
     return render_template('recipes/upsert_recipe.html', form=form)
+
+
+@app.route('/search_recipes', methods=['GET'])
+@login_required
+def search_recipes():
+    return render_template('recipes/recipes.html',
+                           form=SearchRecipesForm(),
+                           recipes=[{'title': r.title,
+                                     'ingredients': r.ingredients,
+                                     'creator': get_username_by_user_id(r.creator_id)}
+                                    for r in find_recipes_by_title(request.args['searchstring'])])
 
 
 @app.route('/recipe/<recipe_id>/edit', methods=['GET', 'POST'])

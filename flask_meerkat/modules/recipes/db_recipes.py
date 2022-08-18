@@ -13,3 +13,7 @@ def insert_recipe(new_recipe, creator_id):
                           instruction=new_recipe['instruction'],
                           creator_id=creator_id))
     db.session.commit()
+
+
+def find_recipes_by_title(search_string):
+    return Recipe.query.filter(Recipe.title.ilike('%{}%'.format(search_string))).all()

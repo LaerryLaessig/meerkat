@@ -7,16 +7,50 @@
     </div>
     <div class="col-md">
         <div class="card-body">
-            <form>
+            <form method="GET" action="{{url_for('search_recipes')}}">
                 <div class="form-group">
-                    {{ form.searchword.label(class="form-control-label") }}
+                    {{ form.searchstring.label(class="form-control-label") }}
                     <div class="input-group">
                         <span class="input-group-text"><span class="fas fa-search"></span></span>
-                        {{ form.searchword(class="form-control form-control-lg") }}
+                        {{ form.searchstring(class="form-control form-control-lg") }}
                     </div>
                 </div>
                 {{ form.submit(class="btn btn-outline-info") }} <a href="{{ url_for('create_recipe') }}" class="btn btn-outline-success" role="button">Create New Recipe</a>
             </form>
+
+            {% if recipes %}
+                {% for recipe in recipes %}
+                    <span class="author-right ">created by {{ recipe.creator }}</span>
+                    <div class="card" style="display: inline.flex;">
+                        <form method="POST" style="padding-right:1em;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ recipe.title }}</h5>
+                                <ul class="list-group list-group-flush">
+                                    {% for ingredient in recipe.ingredients %}
+                                    <li class="list-group-item">
+                                                <div class="input-group-text" style="white-space: pre-wrap;">
+                                                    <span class="fas fa-shopping-basket icon-label"> {{ ingredient.name }}</span>
+                                                </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </form>
+                        <div class="d-grid" style="display:flex;">
+                            <form method="GET" style="padding-right:1em;">
+                                <button class="btn btn-outline-success" formaction="">
+                                    Edit
+                                </button>
+                            </form>
+                            <form method="POST">
+                                <button class="btn btn-outline-danger" formaction="">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>

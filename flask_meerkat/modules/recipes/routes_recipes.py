@@ -5,7 +5,6 @@ from flask import render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 
 from flask_meerkat.database import get_username_by_user_id
-from flask_meerkat.modules.recipes.damig_recipes import do_damig
 from flask_meerkat.modules.recipes.db_recipes import get_recipe_by_id, insert_recipe, find_recipes_by_title, \
     update_recipe, delete_recipe
 from flask_meerkat.modules.recipes.forms_recipes import RecipeForm, SearchRecipesForm
@@ -69,12 +68,6 @@ def edit_recipe(recipe_id):
 def remove_recipe(recipe_id):
     delete_recipe(recipe_id)
     return redirect(url_for('recipes'))
-
-
-@app.route('/recipe/damig', methods=['GET'])
-def damig():
-    do_damig()
-    return 'done'
 
 
 def got_submit_data(form):

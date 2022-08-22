@@ -23,7 +23,7 @@ def update_recipe(actual_recipe, new_recipe):
 
 
 def find_recipes_by_title(search_string):
-    return Recipe.query.filter(Recipe.title.ilike('%{}%'.format(search_string))).all()
+    return Recipe.query.filter(Recipe.title.ilike('%{}%'.format(search_string))).limit(25).all()
 
 
 def delete_recipe(recipe_id):

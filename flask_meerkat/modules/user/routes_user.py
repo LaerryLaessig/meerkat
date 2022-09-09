@@ -50,7 +50,7 @@ def request_reset_password():
         send_password_reset_mail(form.email.data, url_for('reset_password', token=token, _external=True))
         flash(message='Send reset email to {email}!'.format(email=form.email.data), category='success')
         return redirect(url_for('signin'))
-    return render_template('request_password_reset.html', form=form)
+    return render_template('user/request_password_reset.html', form=form)
 
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])

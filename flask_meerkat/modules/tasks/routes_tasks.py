@@ -5,6 +5,8 @@ from flask_meerkat import app
 from flask import render_template, request, url_for
 from flask_login import login_required, current_user
 
+from flask_meerkat.models import Task, Subtask
+from flask_meerkat.modules.recipes.db_recipes import get_recipe_by_id
 from flask_meerkat.modules.tasks.db_tasks import insert_task, get_task_by_reviser_id, get_task_by_id, update_task, \
     delete_task, get_task_by_creator_id
 from flask_meerkat.database import get_all_user, get_user_by_user_id, get_username_by_user_id, get_user_email_by_user_id
@@ -23,12 +25,22 @@ def tasks():
 @login_required
 def create_task():
     form = create_task_form()
-    action_subtasks(form=form)
-    if got_submit_data(form):
-        insert_task(form.data, current_user.id)
-        send_new_task_mail(get_user_email_by_user_id(form.data['reviser']))
-        return redirect_to_tasks()
-    return render_template('tasks/upsert_task.html', form=form)
+    if request.args.get('recipe_id') is not None:
+        recipe_id = request.args['recipe_id']
+        recipe = get_recipe_by_id(recipe_id)
+        task = Task(title=recipe.title,
+                    reviser_id=current_user.id,
+                    subtasks=[Subtask(name='{} {}'.format(i.amount, i.name), status=0) for i in recipe.ingredients],
+                    creator_id=current_user.id)
+        set_values(form, task)
+        return render_template('tasks/upsert_task.html', form=form)
+    else:
+        action_subtasks(form=form)
+        if got_submit_data(form):
+            insert_task(form.data, current_user.id)
+            send_new_task_mail(get_user_email_by_user_id(form.data['reviser']))
+            return redirect_to_tasks()
+        return render_template('tasks/upsert_task.html', form=form)
 
 
 @app.route('/task/<task_id>/edit', methods=['GET', 'POST'])
@@ -78,6 +90,10 @@ def is_request_method(req, method):
 
 def is_request_GET(req):
     return is_request_method(req, 'GET')
+
+
+def is_request_POST(req):
+    return is_request_method(req, 'POST')
 
 
 def create_task_form():

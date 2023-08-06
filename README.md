@@ -1,8 +1,8 @@
 # Simple blog and task manage system
 
-Website to create blog posts, recipes and tasks for different user.
+Website to create blog posts for all users, recipes and tasks for different user.
 
-## enviroment variables
+## Enviroment variables
 - SECRET_KEY
   - change in start.sh or in enviroment variable
   - default value secret_key
@@ -18,10 +18,10 @@ Website to create blog posts, recipes and tasks for different user.
   - mail adress for password reset and inform about new task
   - default value ''
 
-## functions
+## Functions
 - sign up
   - only whitelisted user can sign up
-  - the first sign up user is automatically on the whitelist
+  - the first sign-up user is automatically on the whitelist
   - first sign up user is the admin
 - whitelist
   - the admin can manage the whitelist
@@ -30,6 +30,10 @@ Website to create blog posts, recipes and tasks for different user.
 - task
   - all registered user can create tasks
   - user can see and edit task if they are the reviser or creator of the task
+- recipe
+  - all registered user can search recipes
+  - all registered user can create recipes
+  - all registered user can create tasks from a recipe of ingredients 
 - account
   - user can edit there username and email address
 
@@ -64,7 +68,7 @@ Website to create blog posts, recipes and tasks for different user.
 - WTForms
   - extension that simplifies form validations 
   - https://wtforms.readthedocs.io/en/3.0.x/
-- email_validator
+- email_validatorw
   - extentsion that simplifies email validations 
   - https://pypi.org/project/email-validator/ 
 - waitress

@@ -42,6 +42,11 @@
                                     Edit
                                 </button>
                             </form>
+                            <form method="POST" style="padding-right:1em;">
+                                <button class="btn btn-outline-warning" formaction="{{ url_for('create_task', recipe_id=recipe.id) }}">
+                                    Generate Task
+                                </button>
+                            </form>
                             <form method="POST">
                                 <button class="btn btn-outline-danger" formaction="{{ url_for('remove_recipe', recipe_id=recipe.id) }}">
                                     Delete

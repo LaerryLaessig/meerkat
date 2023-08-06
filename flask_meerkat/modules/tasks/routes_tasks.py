@@ -30,7 +30,7 @@ def create_task():
         recipe = get_recipe_by_id(recipe_id)
         task = Task(title=recipe.title,
                     reviser_id=current_user.id,
-                    subtasks=[Subtask(name='{} {}'.format(i.amount, i.name), status=0) for i in recipe.ingredients],
+                    subtasks=[Subtask(name=f'{i.amount} {i.name}', status=0) for i in recipe.ingredients],
                     creator_id=current_user.id)
         set_values(form, task)
         return render_template('tasks/upsert_task.html', form=form)

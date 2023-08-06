@@ -8,7 +8,7 @@ def send_new_task_mail(email):
         mail.send_message(
                 recipients=[email],
                 subject='New Task',
-                body='Hi,\nyou have got a new task.\n Visit {url} to complete your task.'.format(url=SERVER_DOMAIN)
+                body=f'Hi,\nyou have got a new task.\n Visit {SERVER_DOMAIN} to complete your task.'
             )
     except AssertionError as e:
-        logging.error('Failed to send mail: {}'.format(e))
+        logging.error(f'Failed to send mail: {e}')

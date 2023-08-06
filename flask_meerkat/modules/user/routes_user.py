@@ -48,7 +48,7 @@ def request_reset_password():
     if form.validate_on_submit():
         token = get_user_by_mail(form.email.data).get_reset_token()
         send_password_reset_mail(form.email.data, url_for('reset_password', token=token, _external=True))
-        flash(message='Send reset email to {email}!'.format(email=form.email.data), category='success')
+        flash(message=f'Send reset email to {form.email.data}!', category='success')
         return redirect(url_for('signin'))
     return render_template('user/request_password_reset.html', form=form)
 
@@ -79,9 +79,9 @@ def signup():
         if count_user() == 0:
             insert_whitelist_email(form.data['email'])
         insert_user(form.data)
-        flash(message='Account created for {username}!'.format(username=form.username.data), category='success')
+        flash(message=f'Account created for {form.username.data}!', category='success')
         return redirect(url_for('signin'))
     else:
-        flash(message='Registration not allowed for {email}! Please contact admin.'.format(email=form.email.data),
+        flash(message=f'Registration not allowed for {form.email.data}! Please contact admin.',
               category='danger')
     return render_template('user/signup.html', form=form)

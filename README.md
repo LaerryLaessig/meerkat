@@ -1,76 +1,68 @@
-# Simple blog and task manage system
+# Simple Blog and Task Management System
 
-Website to create blog posts for all users, recipes and tasks for different user.
+This is a Python Flask project that provides a platform for creating and managing blog posts, recipes, and tasks for different users.
 
-## Enviroment variables
-- SECRET_KEY
-  - change in start.sh or in enviroment variable
-  - default value secret_key
-- MAIL_USERNAME
-  - change in start.sh or in enviroment variable
-  - mail account for password reset and inform about new task
-  - default value ''
-- MAIL_PASSWORD
-  - change in start.sh or in enviroment variable
-  - default value ''
-- MAIL_DEFAULT_SENDER
-  - change in start.sh or in enviroment variable
-  - mail adress for password reset and inform about new task
-  - default value ''
+## Features
 
-## Functions
-- sign up
-  - only whitelisted user can sign up
-  - the first sign-up user is automatically on the whitelist
-  - first sign up user is the admin
-- whitelist
-  - the admin can manage the whitelist
-- post
-  - all registered user can manage posts
-- task
-  - all registered user can create tasks
-  - user can see and edit task if they are the reviser or creator of the task
-- recipe
-  - all registered user can search recipes
-  - all registered user can create recipes
-  - all registered user can create tasks from a recipe of ingredients 
-- account
-  - user can edit there username and email address
+### User Sign Up and Authentication
 
-## dependencies
-- flask
-  - micro web framework
-  - https://palletsprojects.com/p/flask/
-- flask-bcrypt
-  - extension to provides bcrypt hashing utilities 
-  - https://flask-bcrypt.readthedocs.io/en/latest/
-- flask_httpauth
-  - extension that simplifies the use of HTTP authentication with Flask routes
-  - https://flask-httpauth.readthedocs.io/en/latest/
-- flask sqlalchemy
-  - extension that simplifies using SQLAlchemy
-  - https://flask-sqlalchemy.palletsprojects.com/
-- flask_bootstrap
-  - extension that simplifies using bootstrap4
-  - https://github.com/mbr/flask-bootstrap
-- flask-login
-  - extension that simplifies manage user sessions 
-  - https://flask-login.readthedocs.io/en/latest/
-- flask-mailer 
-  - extension that simplifies to send emails to user 
-  - https://pythonhosted.org/Flask-Mail/
-- flask-wtf
-  - simple integration of Flask and WTForms, including CSRF, file upload, and reCAPTCHA
-  - https://flask-wtf.readthedocs.io/en/latest/
-- flask-fontawesome
-  - extension that simplifies using fontawesome 
-  - https://pypi.org/project/Flask-FontAwesome/
-- WTForms
-  - extension that simplifies form validations 
-  - https://wtforms.readthedocs.io/en/3.0.x/
-- email_validatorw
-  - extentsion that simplifies email validations 
-  - https://pypi.org/project/email-validator/ 
-- waitress
-  - Waitress is meant to be a production-quality pure Python WSGI server with very acceptable performance
-  - https://github.com/Pylons/waitress
+- Only whitelisted users can sign up.
+- The first user to sign up is automatically added to the whitelist and becomes the admin.
+
+### Whitelist Management
+
+- The admin has the authority to manage the whitelist, controlling who can sign up.
+
+### Blog Posts
+
+- All registered users can create and manage their own blog posts.
+
+### Tasks
+
+- All registered users can create tasks.
+- Users can view and edit tasks if they are the creator or reviser of the task.
+
+### Recipes
+
+- All registered users can search and create recipes.
+- Users can create tasks based on a recipe's list of ingredients.
+
+### Account Management
+
+- Users can edit their usernames and email addresses.
+
+## Environment Variables
+
+To run the application, you need to set the following environment variables:
+
+- `SECRET_KEY`: Change this in the `start.sh` script or set it as an environment variable. Default value is `secret_key`.
+- `MAIL_USERNAME`: Change this in the `start.sh` script or set it as an environment variable. Used for password reset and task notifications. Default value is an empty string.
+- `MAIL_PASSWORD`: Change this in the `start.sh` script or set it as an environment variable. Default value is an empty string.
+- `MAIL_DEFAULT_SENDER`: Change this in the `start.sh` script or set it as an environment variable. Used as the sender's email address for password reset and task notifications. Default value is an empty string.
+
+## Dependencies
+
+This project relies on the following dependencies:
+
+- [Flask](https://palletsprojects.com/p/flask/): Micro web framework.
+- [Flask-Bcrypt](https://flask-bcrypt.readthedocs.io/en/latest/): Provides bcrypt hashing utilities.
+- [Flask-HTTPAuth](https://flask-httpauth.readthedocs.io/en/latest/): Simplifies HTTP authentication with Flask routes.
+- [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/): Simplifies using SQLAlchemy.
+- [Flask-Bootstrap](https://github.com/mbr/flask-bootstrap): Simplifies using Bootstrap 4.
+- [Flask-Login](https://flask-login.readthedocs.io/en/latest/): Simplifies user session management.
+- [Flask-Mailer](https://pythonhosted.org/Flask-Mail/): Simplifies sending emails to users.
+- [Flask-WTF](https://flask-wtf.readthedocs.io/en/latest/): Integrates Flask with WTForms, including CSRF, file upload, and reCAPTCHA.
+- [Flask-FontAwesome](https://pypi.org/project/Flask-FontAwesome/): Simplifies using FontAwesome icons.
+- [WTForms](https://wtforms.readthedocs.io/en/3.0.x/): Simplifies form validations.
+- [email_validator](https://pypi.org/project/email-validator/): Simplifies email validations.
+- [Waitress](https://github.com/Pylons/waitress): A production-quality pure Python WSGI server with good performance.
+
+## Usage
+
+1. Set the required environment variables as mentioned above.
+2. Run the `start.sh` script to start the application.
+3. Access the application in your web browser.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

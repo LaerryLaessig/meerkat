@@ -38,7 +38,7 @@ def create_task():
         action_subtasks(form=form)
         if got_submit_data(form):
             insert_task(form.data, current_user.id)
-            send_new_task_mail(get_user_email_by_user_id(form.data['reviser']))
+            send_new_task_mail(get_user_email_by_user_id(form.data['reviser']), form.data)
             return redirect_to_tasks()
         return render_template('tasks/upsert_task.html', form=form)
 

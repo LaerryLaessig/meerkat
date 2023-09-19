@@ -18,11 +18,21 @@
                 <label>Ingredients</label>
                 {% for ingredients_form in form.ingredients %}
                 {{ ingredients_form.hidden_tag() }}
-                    <div class="input-group">
-                        <span class="input-group-text"><span class="fas fa-shopping-basket icon-label"></span>{{ingredients_form.ingredient.label()}}</span>
-                        {{ ingredients_form.ingredient(class="form-control form-control-lg") }}
-                        <span class="input-group-text"><span class="fas fa-balance-scale icon-label"></span>{{ingredients_form.amount.label()}}</span>
-                        <div class="input-group-text">{{ ingredients_form.amount}}</div>
+                    <div class="input-group row g-2 border-light-subtle rounded p-2">
+                        <div class="col-sm-8">
+                            <span class="input-group-text">
+                                <span class="fas fa-shopping-basket col-1"></span>
+                                <span class="col-lg">{{ingredients_form.ingredient.label()}}</span>
+                            </span>
+                            {{ ingredients_form.ingredient(class="form-control form-control-md") }}
+                        </div>
+                        <div class="col-sm-4">
+                            <span class="input-group-text">
+                                <span class="fas fa-balance-scale col-1"></span>
+                                <span class="col-lg">{{ingredients_form.amount.label()}}</span>
+                            </span>
+                            {{ ingredients_form.amount(class="form-control form-control-md") }}
+                        </div>
                     </div>
                 {% endfor %}
             </div>

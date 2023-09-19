@@ -16,7 +16,7 @@ IMAGE_FOLDER = os.path.join('flask_quiz', 'static', 'images')
 app = Flask(__name__)
 
 with app.app_context():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///meerkat.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config.update(MAIL_SERVER='smtp.gmail.com',

@@ -15,7 +15,7 @@ def send_new_task_mail(email, data):
 
 
 def create_body(data):
-    body = f'Hi,\nyou have got a new task.\n Visit {SERVER_DOMAIN} to complete your task.\n\n'
+    body = f'Hi,\nyou have got a new task.\n'
     body += f'{data["title"]}:\n\n'
     for s in data['subtasks']:
         body += f'- {s["subtask"]}\n'

@@ -42,8 +42,10 @@
             {% endfor %}
             </div>
         </fieldset>
-        {{ form.submit(class="btn btn-outline-info") }}
-        <a class="btn btn-outline-warning" href="{{ url_for('tasks') }}">Cancel</a>
+        <div class="btn-group" role="group">
+            {{ form.submit(class="btn btn-outline-info") }}
+            <a class="btn btn-outline-warning" href="{{ url_for('tasks') }}">Cancel</a>
+        </div>
     </form>
 </div>
 {% endblock app_content %}

@@ -16,8 +16,8 @@
                     <span class="card-text" style="white-space: pre-line">{{ post.text}}</span>
                 </div>
             </form>
-            <div class="d-grid" style="display:flex;">
-                <form method="GET" style="padding-right:1em;">
+            <div class="btn-group" role="group">
+                <form method="GET">
                     <button class="btn btn-outline-success" formaction="{{ url_for('edit_post', post_id=post.id)}}">
                         Edit
                     </button>

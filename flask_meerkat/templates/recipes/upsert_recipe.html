@@ -18,15 +18,15 @@
                 <label>Ingredients</label>
                 {% for ingredients_form in form.ingredients %}
                 {{ ingredients_form.hidden_tag() }}
-                    <div class="input-group row g-2 border-light-subtle rounded p-2">
-                        <div class="col-sm-8">
+                    <div class="input-group g-3 border-light-subtle rounded p-2">
+                        <div class="col-md-8">
                             <span class="input-group-text">
                                 <span class="fas fa-shopping-basket col-1"></span>
                                 <span class="col-lg">{{ingredients_form.ingredient.label()}}</span>
                             </span>
                             {{ ingredients_form.ingredient(class="form-control form-control-md") }}
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4">
                             <span class="input-group-text">
                                 <span class="fas fa-balance-scale col-1"></span>
                                 <span class="col-lg">{{ingredients_form.amount.label()}}</span>
@@ -43,8 +43,10 @@
                         {{ form.instruction(class="form-control form-control-lg", rows="15")}}
                 </div>
             </div>
-        {{ form.submit(class="btn btn-outline-info") }}
-        <a class="btn btn-outline-warning" href="{{ url_for('recipes') }}">Cancel</a>
+        <div class="btn-group" role="group">
+            {{ form.submit(class="btn btn-outline-info") }}
+             <a class="btn btn-outline-warning" href="{{ url_for('recipes') }}">Cancel</a>
+        </div>
     </form>
 </div>
 {% endblock app_content %}

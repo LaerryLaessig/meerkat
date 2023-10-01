@@ -7,7 +7,7 @@ function NavBar(props) {
     function logout() {
         axios({
             method: "POST",
-            url: "/logout",
+            url: "/api/logout",
             headers: {
                 Authorization: 'Bearer '
             }

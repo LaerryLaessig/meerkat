@@ -1,11 +1,13 @@
 import os
 from flask import Flask
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_fontawesome import FontAwesome
+from flask_cors import CORS
 
 USER_ADMIN = os.getenv('USER_ADMIN')
 PWD_ADMIN = os.getenv('PWD_ADMIN')
@@ -19,6 +21,7 @@ with app.app_context():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config["JWT_SECRET_KEY"] = "please-remember-to-change-me"
     app.config.update(MAIL_SERVER='smtp.gmail.com',
                       MAIL_PORT=465,
                       MAIL_USE_SSL=True,
@@ -33,6 +36,8 @@ with app.app_context():
     mail = Mail(app)
     fa = FontAwesome(app)
 
+    CORS(app=app)
+    jwt = JWTManager(app)
     Bootstrap(app)
 
     db = SQLAlchemy(app)

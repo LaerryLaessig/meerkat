@@ -13,7 +13,7 @@ function Login(props) {
   function login(event) {
     axios({
       method: "POST",
-      url: "/login",
+      url: "/api/login",
       data: {
         email: loginForm.email,
         password: loginForm.password

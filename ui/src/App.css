@@ -1,0 +1,15 @@
+.author-right {
+  font-size: 13px;
+  color: #595959;
+  align-items: flex-end;
+  flex-direction: column;
+  display: flex;
+}
+
+.card {
+  margin-bottom: 1em;
+}
+
+.icon-label {
+  margin-right: 0.3em
+}

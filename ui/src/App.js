@@ -34,12 +34,12 @@ function App() {
           : (
             <>
               <Routes>
-                <Route exact path="/login" element={<Home></Home>}></Route>
-                <Route exact path="/home" element={<Home></Home>}></Route>
-                <Route exact path="/tasks" element={<Tasks tokeb={token} setToken={setToken}></Tasks>}></Route>
-                <Route exact path="/recieps" element={<Recieps tokeb={token} setToken={setToken}></Recieps>}></Route>
-                <Route exact path="/whitelist" element={<Whitelist tokeb={token} setToken={setToken}></Whitelist>}></Route>
-                <Route exact path="/account" element={<Account tokeb={token} setToken={setToken}></Account>}></Route>
+                <Route exact path="/login" element={<Home token={token} setToken={setToken}></Home>}></Route>
+                <Route exact path="/home" element={<Home token={token} setToken={setToken}></Home>}></Route>
+                <Route exact path="/tasks" element={<Tasks token={token} setToken={setToken}></Tasks>}></Route>
+                <Route exact path="/recieps" element={<Recieps token={token} setToken={setToken}></Recieps>}></Route>
+                <Route exact path="/whitelist" element={<Whitelist token={token} setToken={setToken}></Whitelist>}></Route>
+                <Route exact path="/account" element={<Account token={token} setToken={setToken}></Account>}></Route>
               </Routes>
             </>
           )}

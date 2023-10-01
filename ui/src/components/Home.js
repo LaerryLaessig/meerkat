@@ -34,25 +34,21 @@ function Home(props) {
 
   const [posts, setPosts] = useState([]);
   useEffect(() => {
-    const getData = async () => {
-      const data = await (
-        await axios({
-          method: "GET",
-          url: "/api/post",
-          headers: {
-            Authorization: 'Bearer ' + props.token
-          }
-        })
-          .then((response) => {
-            const res = response.data
-            res.access_token && props.setToken(res.access_token)
-            setPosts(res)
-          }).catch((error) => {
-            console.log(error.response)
-          }))
-    }
-    getData();
-  }, []);
+    axios({
+      method: "GET",
+      url: "/api/post",
+      headers: {
+        Authorization: 'Bearer ' + props.token
+      }
+    })
+      .then((response) => {
+        const res = response.data
+        res.access_token && props.setToken(res.access_token)
+        setPosts(res)
+      }).catch((error) => {
+        console.log(error.response)
+      })
+  }, [props]);
 
 
   return (

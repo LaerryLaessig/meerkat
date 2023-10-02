@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/User/Login'
-import Home from './components/Home'
+import Home from './components/Posts/Home'
 import Tasks from './components/Tasks/Tasks';
 import Recieps from './components/Recieps/Recieps';
 import Whitelist from './components/Admin/Whitelist';
@@ -15,7 +15,7 @@ import AuthHandler from './core/AuthHandler'
 import './App.css'
 
 function App() {
-  const { token, removeToken, setToken, hasJWT } = AuthHandler();
+  const { token, removeToken, setToken } = AuthHandler();
 
   return (
     <BrowserRouter>

@@ -4,7 +4,7 @@ from flask_meerkat import app, bcrypt
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, unset_jwt_cookies, jwt_required, get_jwt, \
     get_jwt_identity
-from flask_meerkat.database import get_user_by_mail, get_username_by_user_id
+from flask_meerkat.database import get_user_by_mail, get_username_by_user_id, get_whitelist, insert_whitelist_email
 from flask_meerkat.modules.post.db_post import get_all_posts
 
 
@@ -13,7 +13,7 @@ def refresh_expiring_jwts(response):
     try:
         exp_timestamp = get_jwt()["exp"]
         now = datetime.now(timezone.utc)
-        target_timestamp = datetime.timestamp(now + timedelta(minutes=60))
+        target_timestamp = datetime.timestamp(now + timedelta(hours=1))
         if target_timestamp > exp_timestamp:
             access_token = create_access_token(identity=get_jwt_identity())
             data = response.get_json()
@@ -39,7 +39,14 @@ def create_token():
     return response
 
 
-@app.route('/api/post', methods=["GET"])
+@app.route("/api/logout", methods=["POST"])
+def api_logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
+
+
+@app.route('/api/post', methods=['GET'])
 @jwt_required()
 def get_posts():
     posts = [{
@@ -50,14 +57,18 @@ def get_posts():
     return posts
 
 
-@app.route('/api/health', methods=["GET"])
+@app.route('/api/add_whitelist', methods=['POST'])
 @jwt_required()
-def health():
-    return '{"status": "ok"}'
+def add_item_to_whitelist():
+    email = request.json.get("email", None)
+    insert_whitelist_email(email)
+    return email, 200
 
 
-@app.route("/api/logout", methods=["POST"])
-def api_logout():
-    response = jsonify({"msg": "logout successful"})
-    unset_jwt_cookies(response)
-    return response
+@app.route('/api/whitelist', methods=['GET'])
+@jwt_required()
+def get_whitelist_items():
+    whitelist = [{
+        'id': w.id,
+        'email': w.email} for w in get_whitelist()]
+    return whitelist

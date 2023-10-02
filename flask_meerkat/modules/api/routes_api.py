@@ -3,8 +3,9 @@ from datetime import datetime, timezone, timedelta
 from flask_meerkat import app, bcrypt
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, unset_jwt_cookies, jwt_required, get_jwt, \
-    get_jwt_identity
-from flask_meerkat.database import get_user_by_mail, get_username_by_user_id, get_whitelist, insert_whitelist_email
+    get_jwt_identity, current_user
+from flask_meerkat.database import get_user_by_mail, get_username_by_user_id, get_whitelist, insert_whitelist_email, \
+    delete_whitelist_by_id, get_user_email_by_user_id
 from flask_meerkat.modules.post.db_post import get_all_posts
 
 
@@ -57,7 +58,7 @@ def get_posts():
     return posts
 
 
-@app.route('/api/add_whitelist', methods=['POST'])
+@app.route('/api/whitelist', methods=['POST'])
 @jwt_required()
 def add_item_to_whitelist():
     email = request.json.get("email", None)
@@ -72,3 +73,12 @@ def get_whitelist_items():
         'id': w.id,
         'email': w.email} for w in get_whitelist()]
     return whitelist
+
+
+@app.route('/api/whitelist/<whitelist_id>', methods=['DELETE'])
+@jwt_required()
+def delete_whitelist_item(whitelist_id):
+    if get_jwt_identity() == get_user_email_by_user_id(1):
+        delete_whitelist_by_id(whitelist_id)
+    return whitelist_id, 200
+

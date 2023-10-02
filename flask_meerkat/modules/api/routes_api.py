@@ -63,7 +63,7 @@ def get_posts():
 def add_item_to_whitelist():
     email = request.json.get("email", None)
     insert_whitelist_email(email)
-    return email, 200
+    return {"msg": f"add {email} to whitelist"}, 201
 
 
 @app.route('/api/whitelist', methods=['GET'])
@@ -80,5 +80,5 @@ def get_whitelist_items():
 def delete_whitelist_item(whitelist_id):
     if get_jwt_identity() == get_user_email_by_user_id(1):
         delete_whitelist_by_id(whitelist_id)
-    return whitelist_id, 200
+    return '', 204
 

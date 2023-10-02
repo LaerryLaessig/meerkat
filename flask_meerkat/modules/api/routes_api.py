@@ -3,7 +3,7 @@ from datetime import datetime, timezone, timedelta
 from flask_meerkat import app, bcrypt
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, unset_jwt_cookies, jwt_required, get_jwt, \
-    get_jwt_identity, current_user
+    get_jwt_identity
 from flask_meerkat.database import get_user_by_mail, get_username_by_user_id, get_whitelist, insert_whitelist_email, \
     delete_whitelist_by_id, get_user_email_by_user_id
 from flask_meerkat.modules.post.db_post import get_all_posts

@@ -6,7 +6,7 @@ function Reciep() {
   return (
     <>
       <span className="author-right ">created by creator</span>
-      <div className="card" style="display: inline.flex;">
+      <div className="card" style={{ "display": "inline.flex" }}>
         <form method="POST">
           <div className="card-body">
             <h5 className="card-title">Title</h5>
@@ -61,7 +61,7 @@ function Recieps(props) {
                 </div>
               </div>
               <div className="btn-group" role="group">
-                <button className="btn btn-outline-info">Search</button> <a href="" className="btn btn-outline-success" role="button">Create New Recipe</a>
+                <button className="btn btn-outline-info">Search</button> <a href="/" className="btn btn-outline-success" role="button">Create New Recipe</a>
               </div>
             </form>
           </div>

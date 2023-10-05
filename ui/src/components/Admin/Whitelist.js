@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 
 function Whitelist(props) {
 
-  function get_whitelist() {
+  const get_new_whitelist = useCallback(() => {
     axios({
       method: "GET",
       url: "/api/whitelist",
@@ -23,7 +23,7 @@ function Whitelist(props) {
       }).catch((error) => {
         console.log(error.response)
       })
-  }
+  }, [props]);
 
   function WhiteListItem(e) {
     function deleteWhitelistItem(event) {
@@ -34,7 +34,7 @@ function Whitelist(props) {
           Authorization: 'Bearer ' + props.token
         }
       }).then(() => {
-        get_whitelist()
+        get_new_whitelist()
       })
         .catch((error) => {
           if (error.response) {
@@ -69,8 +69,8 @@ function Whitelist(props) {
 
 
   useEffect(() => {
-    get_whitelist()
-  }, [props]);
+    get_new_whitelist()
+  }, [props, get_new_whitelist]);
 
   function addWhiteListItem(event) {
     axios({
